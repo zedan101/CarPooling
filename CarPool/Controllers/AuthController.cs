@@ -10,13 +10,13 @@ using System.Text;
 public class AuthController : ControllerBase
 {
     [HttpGet("login")]
-    public IActionResult Login(string userEmail , string password)
+    public AuthenticatedResponse Login(string userEmail , string password)
     {
         if (userEmail == null || password == null)
         {
-            return BadRequest("Invalid client request");
+            return new AuthenticatedResponse { Token = null, Success = false };
         }
-        if (GlobalStorage.Users.Any(us=>us.UserEmail==userEmail) && GlobalStorage.Users.Any(us => us.Password == password))
+        else if (GlobalStorage.Users.Any(us=>us.UserEmail==userEmail) && GlobalStorage.Users.Any(us => us.Password == password))
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -28,8 +28,11 @@ public class AuthController : ControllerBase
                 signingCredentials: signinCredentials
             );
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-            return Ok(new AuthenticatedResponse { Token = tokenString });
+            return new AuthenticatedResponse { Token = tokenString , Success=true};
         }
-        return Unauthorized();
+        else
+        {
+            return new AuthenticatedResponse { Token = null, Success = false };
+        }
     }
 }

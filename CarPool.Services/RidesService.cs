@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CarPool.Interfaces;
 using CarPool.Models;
+using CarPool.Services.Interfaces;
 
 namespace CarPool.Services
 {
@@ -12,7 +12,7 @@ namespace CarPool.Services
     {
             public List<Rides> GetMatches(string date, string time, string startLocation, string destination)
             {
-                return GlobalStorage.Rides.FindAll(rides => rides.Date == date && rides.Time == time && rides.Location[0] == startLocation && rides.Location.Any(loc => loc == destination)).ToList();
+                return GlobalStorage.Rides.FindAll(rides => rides.Date == date && rides.Time == time && rides.Location.First() == startLocation && rides.Location.Any(loc => loc == destination)).ToList();
             }
 
             public bool OfferRide(Rides ride)
@@ -23,7 +23,7 @@ namespace CarPool.Services
 
             public List<Rides> GetRideHistory(string userId)
             {
-                return GlobalStorage.Rides.Where(ride => ride.RideTakenBy == userId || ride.RideOfferedBy == userId).ToList();
+                return GlobalStorage.Rides.Where(ride => ride.RideTakenBy.Any(id => id==userId) || ride.RideOfferedBy == userId).ToList();
             }
     }
 }

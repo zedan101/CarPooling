@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CarPool.Models;
-using CarPool.Interfaces;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
+using CarPool.Services.Interfaces;
 
 namespace CarPool.Controllers
 {
@@ -13,6 +13,7 @@ namespace CarPool.Controllers
     public class RidesController : ControllerBase
     {
         private readonly IRidesService _ridesService;
+        JsonSerializer jsonSerializer;
         public RidesController(IRidesService ridesService)
         {
             _ridesService = ridesService;
@@ -20,28 +21,26 @@ namespace CarPool.Controllers
 
         
 
-        [HttpGet]
-        [Route("GetRideMatches")]
+        [HttpGet("GetRideMatches")]
         [Authorize]
 
-        public string GetRideMatches(string date, string time, string startLocation, string destination)
+        public IEnumerable<Rides> GetRideMatches(string date, string time, string startLocation, string destination)
         {
-            var serializerSettings = new JsonSerializerSettings
+            /*var serializerSettings = new JsonSerializerSettings
             {
                 DefaultValueHandling = DefaultValueHandling.Include
-            };
-            return JsonConvert.SerializeObject(_ridesService.GetMatches(date, time, startLocation, destination), Formatting.Indented, serializerSettings);
+            };*/
+            //return JsonConvert.SerializeObject(_ridesService.GetMatches(date, time, startLocation, destination), Formatting.Indented, serializerSettings);
          
-          //  return _ridesService.GetMatches(date, time, startLocation, destination);
+           return _ridesService.GetMatches(date, time, startLocation, destination);
 
 
         }
 
-        [HttpPost]
-        [Route("PushRide")]
+        [HttpPost("PushRide")]
         [Authorize]
 
-        public bool PushRides(Rides ride)
+        public bool PushRides([FromBody] Rides ride)
         {
             try
             {
@@ -61,8 +60,7 @@ namespace CarPool.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("GetHistory")]
+        [HttpGet("GetHistory")]
         [Authorize]
 
         public List<Rides> GetHistory(string userId)

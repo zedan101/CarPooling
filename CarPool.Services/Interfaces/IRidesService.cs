@@ -1,6 +1,6 @@
 ﻿using CarPool.Models;
 
-namespace CarPool.Interfaces
+namespace CarPool.Services.Interfaces
 {
     public interface IRidesService
     {

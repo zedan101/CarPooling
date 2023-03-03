@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CarPool.Models;
 using Microsoft.AspNetCore.Cors;
-using CarPool.Interfaces;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using CarPool.Services.Interfaces;
 
 namespace CarPool.Controllers
 {
@@ -18,8 +18,7 @@ namespace CarPool.Controllers
             _usersService = usersService;
         }
 
-        [HttpGet]
-        [Route("GetUserDetails")]
+        [HttpGet("GetUserDetails")]
         [Authorize]
 
         public Users GetUserDetails(string userId)
@@ -27,8 +26,7 @@ namespace CarPool.Controllers
             return _usersService.GetUsers(userId);
         }
 
-        [HttpGet]
-        [Route("GetUsers")]
+        [HttpGet("GetUsers")]
         [Authorize]
 
         public List<Users> GetUsers()
@@ -36,8 +34,7 @@ namespace CarPool.Controllers
             return _usersService.GetUsers();
         }
 
-        [HttpPost]
-        [Route("PostUser")]
+        [HttpPost("PostUser")]
         [Authorize]
 
         public bool PostUser([FromBody] Users users)
@@ -60,32 +57,9 @@ namespace CarPool.Controllers
             
         }
 
-        /*[HttpGet]
-        [Route("ValidateUser")]
-        [Authorize]
+        
 
-        public bool ValidateUser(string userEmail, string password)
-        {
-            try
-            {
-                if (userEmail == null || password == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    return _usersService.ValidateUser(userEmail, password);
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            
-        }*/
-
-        [HttpGet]
-        [Route("ValidateEmail")]
+        [HttpGet("ValidateEmail")]
         [Authorize]
 
         public bool GetEmailValidation(string userEmail) 

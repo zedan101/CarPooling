@@ -1,5 +1,5 @@
-﻿using CarPool.Interfaces;
-using CarPool.Models;
+﻿using CarPool.Models;
+using CarPool.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

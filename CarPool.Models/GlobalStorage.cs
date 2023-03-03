@@ -27,7 +27,7 @@ namespace CarPool.Models
                 Price= "$100",
                 RideId= "abc@123",
                 RideOfferedBy= "gh1",
-                RideTakenBy= ""
+                RideTakenBy= new List<string>{"",""}
             }
         };
     }

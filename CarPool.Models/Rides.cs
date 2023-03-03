@@ -17,6 +17,8 @@ namespace CarPool.Models
         public string Price { get; set; }
         public string RideId { get; set; }
         public string RideOfferedBy { get; set; }
-        public string RideTakenBy { get; set; }
+
+        public List<string> RideTakenBy = new List<string>();
+
     }
 }
