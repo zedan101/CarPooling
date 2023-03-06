@@ -12,7 +12,6 @@ namespace CarPool.Models
                 Password ="Nitish%%",
                 ProfileImage="hkdhk",
                 UserName="Nitish",
-                UserId = "gh1",
 
             }
         };

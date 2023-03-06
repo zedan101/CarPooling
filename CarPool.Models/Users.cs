@@ -7,14 +7,34 @@ using System.Threading.Tasks;
 
 namespace CarPool.Models
 {
+    /// <summary>
+    /// Class to store Users data.
+    /// </summary>
     public class Users
     {
+        /// <summary>
+        /// Email of the user.
+        /// </summary>
         public string UserEmail { get; set; }
-        private string _password;
-        public string ProfileImage { get; set; }
-        public string UserName { get; set; }
-        public string UserId { get; set; }
 
+        /// <summary>
+        /// Private mmember password
+        /// </summary>
+        private string _password;
+
+        /// <summary>
+        /// Profile image of the user
+        /// </summary>
+        public string ProfileImage { get; set; }
+
+        /// <summary>
+        /// Name of the user
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// Password property of _password member
+        /// </summary>
         [JsonIgnore]
         public string Password
         {

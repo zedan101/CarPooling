@@ -1,8 +1,10 @@
 using CarPool.Services;
 using CarPool.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using System.Security.Claims;
 using System.Text;
 namespace CarPool
 {
@@ -33,6 +35,7 @@ namespace CarPool
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
                      };
                 });
+            builder.Services.Configure<IdentityOptions>(options => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
             builder.Services.AddControllers().AddNewtonsoftJson();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddSwaggerGen();
@@ -45,7 +48,6 @@ namespace CarPool
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
 
             app.UseCors(x => x
             .AllowAnyOrigin()
