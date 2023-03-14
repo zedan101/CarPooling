@@ -47,13 +47,13 @@ namespace CarPool.Models
         /// <summary>
         /// id of the user offering ride.
         /// </summary>
-        public string RideOfferedBy { get; set; }
+        public string? RideOfferedBy { get; set; }
 
         /// <summary>
         /// List of id of users taking the ride.
         /// </summary>
         [JsonInclude]
-        public List<string> RideTakenBy = new();
+        public List<string>? RideTakenBy = new();
 
     }
 }

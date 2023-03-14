@@ -94,18 +94,20 @@ namespace CarPool.Services
             {
                 var matches = new List<Ride>();
                 List<OfferedRide> res =await _carPoolContext.OfferedRide.Include(or => or.Locations).Include(or => or.BookedRides).Where(rides => rides.BookedRides.Any(br=> br.UserId == userId)).ToListAsync();
-                var match = new Ride();
                 for (int i = 0; i < res.Count; i++)
                 {
-                    match.Location = res[i].Locations.OrderBy(loc => loc.SequenceNum).Select(loc => loc.Location).ToList();
-                    match.Date = res[i].Date;
-                    match.Time = res[i].Time;
-                    match.NumberOfSeatsAvailable = res[i].AvailableSeats;
-                    match.Price = res[i].Price;
-                    match.RideId = res[i].RideId;
-                    match.RideOfferedBy = res[i].UserId;
-                    match.RideTakenBy = res[i].BookedRides.Select(br => br.UserId).ToList();
-                    matches.Add(match);
+                    matches.Add(new()
+                    {
+                        Location = res[i].Locations.OrderBy(loc => loc.SequenceNum).Select(loc => loc.Location).ToList(),
+                        Date = res[i].Date,
+                        Time = res[i].Time,
+                        NumberOfSeatsAvailable = res[i].AvailableSeats,
+                        Price = res[i].Price,
+                        RideId = res[i].RideId,
+                        RideOfferedBy = res[i].UserId,
+                        RideTakenBy = res[i].BookedRides.Select(br => br.UserId).ToList()
+
+                    });
                 }
                 return matches;
             }

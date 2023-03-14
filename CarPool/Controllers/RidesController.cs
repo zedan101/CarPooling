@@ -60,6 +60,7 @@ namespace CarPool.Controllers
                 }
                 else
                 {
+                    ride.RideOfferedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                     return _ridesService.OfferRide(ride).Result;
                     
                 }
