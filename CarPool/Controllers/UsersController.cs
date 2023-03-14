@@ -33,10 +33,10 @@ namespace CarPool.Controllers
         [HttpGet("GetUserDetails")]
         [Authorize]
 
-        public Users GetUserDetails()
+        public User GetUserDetails()
         {
-            var userEmail = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return _usersService.GetUsers(userEmail);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return _usersService.GetUsers(userId);
         }
 
         /// <summary>
@@ -46,9 +46,9 @@ namespace CarPool.Controllers
         [HttpGet("GetUsers")]
         [Authorize]
 
-        public List<Users> GetUsers()
+        public User GetUsers(string userId)
         {
-            return _usersService.GetUsers();
+            return _usersService.GetUsers(userId);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace CarPool.Controllers
         [HttpPost("PostUser")]
         [Authorize]
 
-        public bool PostUser([FromBody] Users users)
+        public bool PostUser([FromBody] User users)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace CarPool.Controllers
                 }
                 else
                 {
-                    return _usersService.PostUserDetails(users);
+                    return _usersService.PostUserDetails(users).Result;
                 }
             }
             catch (Exception ex)

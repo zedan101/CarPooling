@@ -1,5 +1,6 @@
 ﻿using CarPool.Models;
 using CarPool.Services.Interfaces;
+using CarpoolDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,23 +12,21 @@ namespace CarPool.Services
     public class UsersService:IUsersService
     {
 
+        private readonly CarPoolContext _carPoolContext;
+        public UsersService(CarPoolContext carPoolContext)
+        {
+            _carPoolContext = carPoolContext;
+        }
+
         /// <summary>
         /// Method to get user details. 
         /// </summary>
         /// <param name="userId">Id of the user</param>
         /// <returns>instence of Users class contains data of user whoes id matches the argument </returns>
-        public Users GetUsers(string userEmail)
+        public User GetUsers(string userId)
         {
-            return GlobalStorage.Users.FirstOrDefault(user => user.UserEmail == userEmail);
-        }
-
-        /// <summary>
-        /// Get all The users info
-        /// </summary>
-        /// <returns>List of all the users </returns>
-        public List<Users> GetUsers()
-        {
-            return GlobalStorage.Users;
+            var user = _carPoolContext.User.FirstOrDefault(user => user.UserId == userId);
+            return new User() { UserEmail = user.UserEmail, UserName = user.Name,Password =user.Password , ProfileImage = user.ProfileImage , UserId=user.UserId};
         }
 
         /// <summary>
@@ -35,9 +34,17 @@ namespace CarPool.Services
         /// </summary>
         /// <param name="users">User Details as instence of Users Class</param>
         /// <returns>Success or not response as bool</returns>
-        public bool PostUserDetails(Users users)
+        public async Task<bool> PostUserDetails(User users)
         {
-            GlobalStorage.Users.Add(users);
+            _carPoolContext.User.Add(new DataLayer.Models.UserEntity()
+            {
+                UserEmail= users.UserEmail,
+                Name = users.UserName,
+                UserId= users.UserId,
+                Password= users.Password,
+                ProfileImage= users.ProfileImage,
+            });
+            await _carPoolContext.SaveChangesAsync();
             return true;
         }
 
@@ -55,7 +62,7 @@ namespace CarPool.Services
             }
             else
             {
-                return GlobalStorage.Users.Any(user => user.UserEmail == userEmail && user.Password == password);
+                return _carPoolContext.User.Any(user => user.UserEmail == userEmail && user.Password == password);
             }
         }
 
@@ -66,7 +73,7 @@ namespace CarPool.Services
         /// <returns>valid or not response as bool</returns>
         public bool ValidateEmail(string email)
         {
-            return GlobalStorage.Users.Any(user => user.UserEmail == email);
+            return _carPoolContext.User.Any(user => user.UserEmail == email);
         }
     }
 }

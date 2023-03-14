@@ -4,29 +4,30 @@ namespace CarPool.Models
     public class GlobalStorage
     {
 
-        public static List<Users> Users = new List<Users>()
+        public static List<User> Users = new List<User>()
         {
-            new Users()
+            new User()
             {
                 UserEmail ="nitish@132",
                 Password ="Nitish%%",
                 ProfileImage="hkdhk",
                 UserName="Nitish",
+                UserId ="gh1"
 
             }
         };
-        public static List<Rides> Rides = new List<Rides>()
+        public static List<Ride> Rides = new List<Ride>()
         {
-            new Rides()
+            new Ride()
             {
                 Location= new List<string>{"Delhi","Mumbai"},
-                Date= "10/10/2023",
-                Time= "08:00pm",
-                NumberOfSeatsAvailable= "3",
-                Price= "$100",
+                Date= new DateTime(2023 , 10 ,10),
+                Time= 1,
+                NumberOfSeatsAvailable= 2,
+                Price= 100,
                 RideId= "abc@123",
                 RideOfferedBy= "gh1",
-                RideTakenBy= new List<string>{"",""}
+                RideTakenBy= new List<string>{"gh1",}
             }
         };
     }

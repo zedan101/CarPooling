@@ -43,7 +43,7 @@ namespace CarPool.Controllers
             {
                 var claims = new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, userEmail)
+                    new Claim(ClaimTypes.NameIdentifier, GlobalStorage.Users.First(user=>user.UserEmail==userEmail).UserId)
                 };
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);

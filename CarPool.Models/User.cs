@@ -10,7 +10,7 @@ namespace CarPool.Models
     /// <summary>
     /// Class to store Users data.
     /// </summary>
-    public class Users
+    public class User
     {
         /// <summary>
         /// Email of the user.
@@ -33,12 +33,24 @@ namespace CarPool.Models
         public string UserName { get; set; }
 
         /// <summary>
+        /// Id of the user
+        /// </summary>
+        public string UserId { get; set; }
+
+        /// <summary>
         /// Password property of _password member
         /// </summary>
         [JsonIgnore]
         public string Password
         {
-            get; set;
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                _password = value;
+            }
         }
     }
 }

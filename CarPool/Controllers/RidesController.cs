@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using CarPool.Models;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using CarPool.Services.Interfaces;
@@ -39,9 +37,9 @@ namespace CarPool.Controllers
         [HttpGet("GetRideMatches")]
         [Authorize]
 
-        public IEnumerable<Rides> GetRideMatches(string date, string time, string startLocation, string destination)
+        public IEnumerable<Ride> GetRideMatches(DateTime date, int time, string startLocation, string destination)
         {
-           return _ridesService.GetMatches(date, time, startLocation, destination);
+           return _ridesService.GetMatches(date, time, startLocation, destination).Result;
         }
 
         /// <summary>
@@ -52,7 +50,7 @@ namespace CarPool.Controllers
         [HttpPost("PushRide")]
         [Authorize]
 
-        public bool PushRides([FromBody] Rides ride)
+        public bool PushRides([FromBody] Ride ride)
         {
             try
             {
@@ -62,7 +60,7 @@ namespace CarPool.Controllers
                 }
                 else
                 {
-                    return _ridesService.OfferRide(ride);
+                    return _ridesService.OfferRide(ride).Result;
                     
                 }
             }
@@ -73,16 +71,30 @@ namespace CarPool.Controllers
         }
 
         /// <summary>
-        /// Controller to get userEmail from the token and pass it for processing to GetRideHistory method of RidesService.
+        /// Controller to get userId from the token and pass it for processing to GetBookedRideHistory method of RidesService.
         /// </summary>
-        /// <returns>Returns response from GetRideHistory method of RidesService</returns>
-        [HttpGet("GetHistory")]
+        /// <returns>Returns response from GetBookedRideHistory method of RidesService</returns>
+        [HttpGet("GetBookedHistory")]
         [Authorize]
 
-        public List<Rides> GetHistory()
+        public List<Ride> GetBookedHistory()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return _ridesService.GetRideHistory(userId);
+            return _ridesService.GetBookedRideHistory(userId).Result;
+        }
+
+        /// <summary>
+        /// Controller to get userId from the token and pass it for processing to GetOfferedRideHistory method of RidesService.
+        /// </summary>
+        /// <returns>Returns response from GetOfferedRideHistory method of RidesService</returns>
+
+        [HttpGet("GetOfferedHistory")]
+        [Authorize]
+
+        public List<Ride> GetOfferedHistory()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return _ridesService.GetOfferedRideHistory(userId).Result;
         }
 
         /// <summary>
@@ -91,13 +103,21 @@ namespace CarPool.Controllers
         /// <param name="seats">UserInput of no of seats to book</param>
         /// <param name="rideId">Id of ride being booked</param>
         /// <returns>Returns the response from Booking method of RidesService</returns>
-        [HttpPut("Booking")]
+        [HttpPost("Booking")]
         [Authorize]
 
         public bool Booking(int seats , string rideId)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return _ridesService.Booking(userId, seats, rideId);
+
+            if (userId != null && seats != 0 && rideId != null)
+            {
+                return _ridesService.Booking(userId, seats, rideId).Result;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
