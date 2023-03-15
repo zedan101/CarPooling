@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Carpool.DataLayer\CarPool.DataLayer.csproj" />
     <ProjectReference Include="..\CarPool.Services\CarPool.Services.csproj" />
   </ItemGroup>
 

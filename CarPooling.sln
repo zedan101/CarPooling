@@ -9,10 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarPool", "CarPool\CarPool.
 	ProjectSection(ProjectDependencies) = postProject
 		{02CD0B73-69FD-489D-BB77-CDFCCDBD38F7} = {02CD0B73-69FD-489D-BB77-CDFCCDBD38F7}
 		{07720AD6-F66F-4602-900A-A19A21F602D3} = {07720AD6-F66F-4602-900A-A19A21F602D3}
-		{71BC63E2-9382-48B3-8862-A3BE64F2863A} = {71BC63E2-9382-48B3-8862-A3BE64F2863A}
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarPool.DataLayer", "CarpoolDataLayer\CarPool.DataLayer.csproj", "{71BC63E2-9382-48B3-8862-A3BE64F2863A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarPool.Models", "CarPool.Models\CarPool.Models.csproj", "{07720AD6-F66F-4602-900A-A19A21F602D3}"
 EndProject
@@ -20,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarPool.Services", "CarPool
 	ProjectSection(ProjectDependencies) = postProject
 		{07720AD6-F66F-4602-900A-A19A21F602D3} = {07720AD6-F66F-4602-900A-A19A21F602D3}
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarPool.DataLayer", "Carpool.DataLayer\CarPool.DataLayer.csproj", "{2274C2C3-4C69-4835-93ED-2656BE6B3106}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +36,6 @@ Global
 		{90F3B520-8BFA-46E7-9DC5-601D069C94FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90F3B520-8BFA-46E7-9DC5-601D069C94FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90F3B520-8BFA-46E7-9DC5-601D069C94FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71BC63E2-9382-48B3-8862-A3BE64F2863A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71BC63E2-9382-48B3-8862-A3BE64F2863A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71BC63E2-9382-48B3-8862-A3BE64F2863A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71BC63E2-9382-48B3-8862-A3BE64F2863A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{07720AD6-F66F-4602-900A-A19A21F602D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{07720AD6-F66F-4602-900A-A19A21F602D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07720AD6-F66F-4602-900A-A19A21F602D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -49,6 +44,10 @@ Global
 		{02CD0B73-69FD-489D-BB77-CDFCCDBD38F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02CD0B73-69FD-489D-BB77-CDFCCDBD38F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02CD0B73-69FD-489D-BB77-CDFCCDBD38F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2274C2C3-4C69-4835-93ED-2656BE6B3106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2274C2C3-4C69-4835-93ED-2656BE6B3106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2274C2C3-4C69-4835-93ED-2656BE6B3106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2274C2C3-4C69-4835-93ED-2656BE6B3106}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

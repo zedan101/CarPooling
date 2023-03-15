@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Carpool.DataLayer\CarPool.DataLayer.csproj" />
     <ProjectReference Include="..\CarPool.Models\CarPool.Models.csproj" />
-    <ProjectReference Include="..\CarpoolDataLayer\CarPool.DataLayer.csproj" />
   </ItemGroup>
 
 </Project>

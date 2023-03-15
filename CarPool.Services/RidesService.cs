@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Carpool.DataLayer;
 using CarPool.DataLayer.Models;
 using CarPool.Models;
 using CarPool.Services.Interfaces;
-using CarpoolDataLayer;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CarPool.Services
 {
@@ -32,7 +27,7 @@ namespace CarPool.Services
         public async Task<List<Ride>> GetMatches(DateTime date, int time, string startLocation, string destination)
             {
                 var matches = new List<Ride>();
-                List<OfferedRide> res =await _carPoolContext.OfferedRide.Include(or=>or.Locations).Include(or=>or.BookedRides).Where(rides => rides.Date == date && rides.Time == time ).ToListAsync();
+                List<OfferedRide> res =await _carPoolContext.OfferedRide.Include(or=>or.Locations).Include(or=>or.BookedRides).Where(rides => rides.Date == date && rides.Time == time && (rides.Locations.Any(loc => loc.Location == startLocation) && rides.Locations.Any(loc => loc.Location == destination) && rides.AvailableSeats > 0)).ToListAsync();
                 var match = new Ride();
                 for(int i =0; i < res.Count; i++)
                 {
@@ -46,7 +41,7 @@ namespace CarPool.Services
                     match.RideTakenBy= res[i].BookedRides.Select(br=> br.UserId).ToList();
                     matches.Add(match);    
                 }
-                return matches.FindAll(ride => ride.Location.Any(loc => loc == startLocation) && ride.Location.Any(loc => loc == destination) && ride.Location.FindIndex(loc => loc == startLocation) < ride.Location.FindIndex(loc => loc == destination && ride.NumberOfSeatsAvailable > 0)).ToList();
+            return matches.Where(rides => rides.Location.FindIndex(loc => loc == startLocation) < rides.Location.FindIndex(loc => loc == destination)).ToList();
 
             }
 

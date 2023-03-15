@@ -1,7 +1,7 @@
 ﻿using CarPool.DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CarpoolDataLayer
+namespace Carpool.DataLayer
 {
     public class CarPoolContext : DbContext
     {

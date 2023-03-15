@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using System.Security.Claims;
 using System.Text;
-using CarpoolDataLayer;
+using Carpool.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
