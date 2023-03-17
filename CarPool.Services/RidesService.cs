@@ -24,10 +24,10 @@ namespace CarPool.Services
         /// <param name="startLocation">Start point of the ride</param>
         /// <param name="destination">Destination</param>
         /// <returns>Returs list of rides matching the conditions</returns>
-        public async Task<List<Ride>> GetMatches(DateTime date, int time, string startLocation, string destination)
+        public async Task<List<Ride>> GetMatches(string userId,DateTime date, int time, string startLocation, string destination)
             {
                 var matches = new List<Ride>();
-                List<OfferedRide> res =await _carPoolContext.OfferedRide.Include(or=>or.Locations).Include(or=>or.BookedRides).Where(rides => rides.Date == date && rides.Time == time && (rides.Locations.Any(loc => loc.Location == startLocation) && rides.Locations.Any(loc => loc.Location == destination) && rides.AvailableSeats > 0)).ToListAsync();
+                List<OfferedRide> res =await _carPoolContext.OfferedRide.Include(or=>or.Locations).Include(or=>or.BookedRides).Where(rides => rides.UserId!=userId && rides.Date == date && rides.Time == time && (rides.Locations.Any(loc => loc.Location == startLocation) && rides.Locations.Any(loc => loc.Location == destination) && rides.AvailableSeats > 0)).ToListAsync();
                 var match = new Ride();
                 for(int i =0; i < res.Count; i++)
                 {
@@ -116,7 +116,7 @@ namespace CarPool.Services
             public async Task<List<Ride>> GetOfferedRideHistory(string userId)
             {
                 var matches = new List<Ride>();
-                List<OfferedRide> res = await _carPoolContext.OfferedRide.Include(or => or.Locations).Include(or => or.BookedRides).Where(rides => rides.UserId==userId).ToListAsync();
+                List<OfferedRide> res = await _carPoolContext.OfferedRide.Include(or => or.Locations).Include(or => or.BookedRides).Where(rides => rides.UserId==userId && rides.BookedRides.Any()).ToListAsync();
                 for (int i = 0; i < res.Count; i++)
                 {
                     matches.Add(new() {

@@ -39,7 +39,8 @@ namespace CarPool.Controllers
 
         public IEnumerable<Ride> GetRideMatches(DateTime date, int time, string startLocation, string destination)
         {
-           return _ridesService.GetMatches(date, time, startLocation, destination).Result;
+            string userId= User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return _ridesService.GetMatches(userId,date, time, startLocation, destination).Result;
         }
 
         /// <summary>

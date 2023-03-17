@@ -57,7 +57,6 @@ namespace CarPool.Controllers
         /// <param name="users">Data of user from client</param>
         /// <returns>Returns the response from PostUserDetails method of Users Service</returns>
         [HttpPost("PostUser")]
-        [Authorize]
 
         public bool PostUser([FromBody] User users)
         {
@@ -85,7 +84,6 @@ namespace CarPool.Controllers
         /// <param name="userEmail"></param>
         /// <returns>Returns the response from GetEmailValidation method of Users Service</returns>
         [HttpGet("ValidateEmail")]
-        [Authorize]
 
         public bool GetEmailValidation(string userEmail) 
         {

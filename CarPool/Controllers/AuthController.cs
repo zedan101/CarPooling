@@ -1,4 +1,5 @@
-﻿using CarPool.Model;
+﻿using Carpool.DataLayer;
+using CarPool.Model;
 using CarPool.Models;
 using CarPool.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,9 @@ namespace CarPool.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+
+        private readonly CarPoolContext _carPoolContext;
+       
         /// <summary>
         /// member of AuthController class
         /// </summary>
@@ -25,9 +29,10 @@ namespace CarPool.Controllers
         /// Constructor of AuthController Class
         /// </summary>
         /// <param name="usersService">Instence of IUSerService interface</param>
-        public AuthController(IUsersService usersService)
+        public AuthController(IUsersService usersService, CarPoolContext carPoolContext)
         {
             _usersService = usersService;
+            _carPoolContext = carPoolContext;
         }
 
         /// <summary>
@@ -43,7 +48,7 @@ namespace CarPool.Controllers
             {
                 var claims = new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, GlobalStorage.Users.First(user=>user.UserEmail==userEmail).UserId)
+                    new Claim(ClaimTypes.NameIdentifier, _carPoolContext.User.First(user=>user.UserEmail==userEmail).UserId)
                 };
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
