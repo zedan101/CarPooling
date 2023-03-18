@@ -61,6 +61,7 @@ namespace CarPool.Controllers
                 }
                 else
                 {
+                    ride.RideId="ride"+ DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     ride.RideOfferedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                     return _ridesService.OfferRide(ride).Result;
                     

@@ -116,7 +116,7 @@ namespace CarPool.Services
             public async Task<List<Ride>> GetOfferedRideHistory(string userId)
             {
                 var matches = new List<Ride>();
-                List<OfferedRide> res = await _carPoolContext.OfferedRide.Include(or => or.Locations).Include(or => or.BookedRides).Where(rides => rides.UserId==userId && rides.BookedRides.Any()).ToListAsync();
+                List<OfferedRide> res = await _carPoolContext.OfferedRide.Include(or => or.Locations).Include(or => or.BookedRides).Where(rides => rides.UserId==userId).ToListAsync();
                 for (int i = 0; i < res.Count; i++)
                 {
                     matches.Add(new() {
