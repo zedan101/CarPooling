@@ -1,0 +1,39 @@
+<section class="ride-card row p-3 form-box-shadow">
+<h2 *ngIf="usr!=null" class="col-9 m-0">{{usr.userEmail}}</h2>
+<img *ngIf="usr!=null" class="col-3" src={{usr.profileImage}} alt="pic">
+<div class="col-3">
+    <label for="">From</label>
+    <p class="m-0" *ngIf="ride.location">{{start}}</p>
+    <!-- <p class="m-0" *ngIf="ride.location">{{ride.location[0]}}</p> -->
+</div>
+<div class="right-icon d-flex flex-row col-3 gx-0 ps-0 pt-1">
+    <i class="bi bi-circle-fill dark-circle"></i>
+    <i class="bi bi-circle-fill light-circle px-1 py-2"></i>
+    <i class="bi bi-circle-fill light-circle px-1 py-2"></i>
+    <i class="bi bi-circle-fill light-circle px-1 py-2"></i>
+    <i class="bi bi-circle-fill light-circle px-1 py-2"></i>
+    <i class="bi bi-geo-alt-fill location-icon"></i>
+</div>
+<div class="col-6">
+    <label for="">To</label>
+    <p class="m-0" *ngIf="ride.location">{{end}}</p>
+    <!-- <p class="m-0" *ngIf="ride.location">{{ride.location[1]}}</p> -->
+</div>
+<div class="col-6">
+    <label for="">Date</label>
+    <p class="m-0">{{ride.date}}</p>
+</div>
+<div class="col-6">
+    <label for="">Time</label>
+    <p class="m-0">{{labels[ride.time]}}</p>
+</div>
+<div class="col-6">
+    <label>Price</label>
+    <p class="m-0">{{ride.price}}$</p>
+</div>
+<div class="col-6">
+    <label>Seats</label>
+    <p *ngIf="!isOffer" class="m-0">{{ride.numberOfSeatsAvailable}}</p>
+    <p *ngIf="isOffer" class="m-0">{{ride.rideTakenBy.length}}</p>
+</div>
+</section>

@@ -1,0 +1,18 @@
+<section class="home container-fluid ps-0">
+  <app-top-menu class="ps-0"></app-top-menu>
+    <div class="d-flex justify-content-center mt-5 pt-4">
+        <div>
+            <h2 class="pb-4 text-bolder">Hey {{userName}}!</h2>
+            <div class="d-flex">
+                <a routerLink="take-ride" [state]="" class="box-ride background-purple me-3 shadow pt-2" routerLinkActive="active">
+                    <h2 class="text-center pt-4 mt-5">Book a ride</h2>
+                </a>
+                <a routerLink="offer-ride" routerLinkActive="active" class="box-ride background-yellow ms-3 shadow pt-2">
+                    <h2 class="text-center pt-4 mt-5">Offer a ride</h2>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+<router-outlet></router-outlet>

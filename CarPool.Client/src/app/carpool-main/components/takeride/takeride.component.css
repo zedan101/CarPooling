@@ -1,0 +1,51 @@
+
+
+.take-ride-form{
+    width: 24%;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 200 !important;
+    position: relative;
+}
+
+.take-ride-form-body input{
+    border: none;
+    box-shadow: none;
+    padding: 0% !important;
+}
+
+.take-ride-form-body label{
+    font-size: 80%;
+    font-weight: 600;
+    color:#8b8b8b;
+}
+
+.take-ride-form-head input{
+    background-color:#9319FF ;
+    border: #9319FF;
+    box-shadow: none;
+}
+
+.btn-time{
+    border: 1px solid #9319FF;
+    border-radius: 30px;
+    font-weight: normal !important;
+    font-size: 70% !important;
+    color: black !important;
+}
+
+
+.form-switch .form-check-input{
+    width: 3.0em !important;
+    height: 1.5em !important;
+}
+
+.active{
+    background-color: #9319FF !important;
+    color: white !important;
+}
+
+.book-ride-body-right{
+    height: 75vh;
+
+}

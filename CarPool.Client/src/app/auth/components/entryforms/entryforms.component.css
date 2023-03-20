@@ -1,0 +1,97 @@
+
+
+.logo{
+    margin-top: 30px;
+    margin-left: 60px;
+}
+
+
+.row{
+    margin: 0px;
+}
+
+.banner{
+    background: url("../../../../assets/images/img1.png");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: bottom left;
+    height: 100vh;
+}
+.banner-text{
+    color: #334053;
+    display: block;
+    margin-top: 58px;
+    margin-left: 63px;
+    padding-right: 40%;
+    line-height: 120%;
+    font-weight: 900;
+    font-family:open-sans-italic;
+}
+.banner-subtext{
+    color: #334053;
+    font-weight: bold;
+    letter-spacing: 5px;
+    margin-left: 63px;
+    font-size: 150%;
+    padding-bottom: 30%;
+}
+.form-icon{
+    left: 76%;
+    font-size: 180%;
+    color: #D1D1D1;
+    cursor: pointer;
+}
+
+.form-floating>label{
+    padding-left:13% ;
+    left: 25px;
+    top: 4px;
+    color: #D1D1D1;
+    transform-origin: 13% 0%;
+}
+.side-form h2{
+    margin-top:122px;
+    font-weight: bold;
+    color: white;
+}
+.underline{
+    border-top: 3px solid white;
+    margin-left: 43%;
+    padding-top: 0%;
+    padding-left: 12%;
+}
+.underline-base-text{
+    border-top: 3px solid white;
+    margin-left: 25% ;
+    padding-left: 8%;
+}
+.side-form input{
+    width: 345px;
+    height: 66px;
+    border: none;
+    box-shadow: none;
+}
+.base-text{
+    color: white;
+}
+.base-text a{
+    color: white;
+    font-size: 120%;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form-background-yellow{
+    background: url('../../../../assets/images/imgg2.png'),#FFAC19;
+    background-position:bottom 0px right 0px;
+    background-repeat: no-repeat;
+}
+
+.form-background-purple{
+    background: url('../../../../assets/images/imgg2.png'),#9319FF;
+    background-position:bottom 0px right 0px;
+    background-repeat: no-repeat;
+}
+
+
+

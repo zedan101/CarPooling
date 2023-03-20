@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-10">
+        <img src="../../../assets/images/logo.png" alt="logo" class="mt-4 ms-5">
+
+    </div>
+    <div *ngIf="loggedUser!=null" class="profile d-flex col-2 mt-4 ps-5">
+        <h6 class="fw-bold my-auto ps-4">{{loggedUser.userName}}</h6>
+        <img (click)="isDropdown?isDropdown=false:isDropdown=true" class="z-index-top my-auto ms-2 profile-image" src={{loggedUser.profileImage}} alt="user">
+        <div *ngIf="isDropdown" class="profile-dropdown row">
+            <a href="#" routerLink="my-profile" class="col-12 d-flex align-items-center justify-content-center">Profile</a>
+            <a href="#" routerLink="my-rides" class="col-12 d-flex align-items-center justify-content-center">My Rides</a>
+            <a href="#" (click)="logOut()" class="col-12 d-flex align-items-center justify-content-center">Logout</a>
+        </div>
+    </div>
+</div>

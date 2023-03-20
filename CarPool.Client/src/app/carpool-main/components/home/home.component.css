@@ -1,0 +1,16 @@
+.home{
+    background-image: url('../../../../assets/images/img3.png');
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-attachment: fixed;
+}
+.box-ride{
+    width: 318px;
+    height: 206px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+

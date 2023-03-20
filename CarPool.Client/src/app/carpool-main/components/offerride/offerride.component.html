@@ -1,0 +1,142 @@
+<section class="background">
+    <app-top-menu class="ps-0"></app-top-menu>
+    <div class="row">
+        <section class="offer-ride-form form-box-shadow ms-5 mt-4 px-4 py-4 col-6">
+            <div class="offer-ride-form-head">
+                <div class="form-check form-switch pt-2 pe-4 float-end">
+                    <input class="form-check-input p-2" (change)="toogleRide()" [checked]="isChecked" type="checkbox" id="flexSwitchCheckChecked" checked>
+                </div>
+                <div class="head">
+                    <h2>Offer a Ride</h2>
+                    <p>We get you the matches asap!</p>
+                </div>
+            </div>
+            
+            <div class="offer-ride-form-body mt-5 overflow-auto">
+                <form
+                [formGroup]="offerRideForm"
+                (ngSubmit)="isNextPressed = true"
+                >
+                    <div class="row">
+                        <div class="col-10 gx-0">
+                            <div class="form-group border-bottom border-primary  mb-3">
+                                <label for="from">From</label>
+                                <input type="text" class="form-control" placeholder="" id="from" formControlName="from">
+                            </div>
+                            <div *ngIf="rideOffer.from.errors && (rideOffer.from.dirty || rideOffer.from.touched)" class="text-danger">This is a required field</div>
+                            <div class="form-group border-bottom border-primary  mb-3">
+                                <label for="to">To</label>
+                                <input type="text" class="form-control" placeholder="" id="to" formControlName="to">
+                            </div>
+                            <div *ngIf="rideOffer.to.errors && (rideOffer.to.dirty || rideOffer.to.touched)" class="text-danger">This is a required field</div>
+                            <div class="form-group border-bottom border-primary  mb-3">
+                                <label for="date">Date</label>
+                                <input type="date" class="form-control" placeholder="xx/mm/yyyy" id="date" formControlName="date">
+                            </div>
+                            <div *ngIf="rideOffer.date.errors && (rideOffer.date.dirty || rideOffer.date.touched)" class="text-danger">This is a required field</div>
+                        </div>
+                        <div class="right-icon d-flex flex-column float-end col-2 pt-3">
+                            <i class="bi bi-circle-fill dark-circle"></i>
+                            <i class="bi bi-circle-fill light-circle px-1 py-1"></i>
+                            <i class="bi bi-circle-fill light-circle px-1 py-1"></i>
+                            <i class="bi bi-circle-fill light-circle px-1 py-1"></i>
+                            <i class="bi bi-circle-fill light-circle px-1 py-1"></i>
+                            <i class="bi bi-geo-alt-fill location-icon"></i>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 ">
+                        <label>Time</label>
+                        <div class="row pt-2">
+                            <div *ngFor="let label of labels; let i = index" class="col-auto px-2 py-1">
+                                <input type="radio" class="btn-check" formControlName="time" value="{{label}}" id="{{i}}" autocomplete="off" />
+                                <label class="btn btn-time" [class.active]="labels[i]==rideOffer.time.value" for="{{i}}">{{label}}</label>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div *ngIf="rideOffer.time.errors && (rideOffer.time.dirty || rideOffer.time.touched)" class="text-danger">This is a required field</div>
+                    <div>
+                        <button
+                        type="submit"
+                        class="float-end mt-3 btn-style-none"
+                        (click)="(offerRideForm.controls['from'].valid && offerRideForm.controls['to'].valid && offerRideForm.controls['date'].valid &&
+                        offerRideForm.controls['time'].valid) ? isNextPressed = true : isNextPressed=false"
+                        >
+                        Next>>
+                        </button>
+                    </div>
+                </form>
+                
+            </div>
+        </section>
+        <section *ngIf="isNextPressed" class="offer-ride-form form-box-shadow ms-5 mt-4 px-4 py-4 col-6">
+            <div class="offer-ride-form-head">
+                <div class="form-check form-switch pt-2 pe-4 float-end">
+                    <input class="form-check-input p-2" (change)="toogleRide()" [checked]="isChecked" type="checkbox" id="flexSwitchCheckChecked" checked>
+                </div>
+                <div class="head">
+                    <h2>Offer a Ride</h2>
+                    <p>We get you the matches asap!</p>
+                </div>
+            </div>
+            
+            <div class="offer-ride-form-body mt-5">
+                <form
+                [formGroup]="offerRideForm"
+                (ngSubmit)="offerRide()"
+                >
+                    <div class="row">
+                        <div class="col-10 gx-0 mb-3">
+                            <div formArrayName="stops" *ngFor="let number of offerRideForm.controls.stops.controls; let i = index"  class="form-group border-bottom border-primary  mb-2">
+                                <label for="from">Stop {{i+1}}</label>
+                                <div class="d-flex">
+                                    <input type="text"  class="form-control" placeholder="" id="stop{{i}}" formControlName='{{i}}'>
+                                    <a (click)="addStops()" *ngIf="i===0" class="cursor-pointer d-flex justify-content-end btn-style-none add-icon"><i class="bi bi-plus"></i></a>
+                                    <a (click)="minusStops()" *ngIf="i===offerRideForm.controls.stops.controls.length-1" class="cursor-pointer d-flex justify-content-end btn-style-none add-icon"><i class="bi bi-dash"></i></a>
+                                </div>
+                                <!-- <a (click)="minusStops()" *ngIf="i===0" class="cursor-pointer d-flex justify-content-end btn-style-none add-icon"><i class="bi bi-dash"></i></a> -->
+                            </div>
+                            <div *ngIf="rideOffer.stops.errors && (rideOffer.stops.dirty || rideOffer.stops.touched)" class="text-danger">These are required fields</div>
+                        </div>
+                        <div *ngIf="offerRideForm.controls.stops.controls.length >= 2" class="position-sticky right-icon d-flex flex-column float-end col-2">
+                            <i class="bi bi-circle-fill dark-circle"></i>
+                            <i *ngIf="offerRideForm.controls.stops.controls.length >= 4" class="bi bi-circle-fill light-circle px-1 py-1"></i>
+                            <div *ngFor="let number of offerRideForm.controls.stops.controls" class="d-flex flex-column">
+                                <i class="bi bi-circle-fill light-circle px-1 py-1"></i>
+                                <i class="bi bi-circle-fill light-circle px-1 py-1"></i>
+                                <i class="bi bi-circle-fill light-circle px-1 py-1"></i>
+                            </div>
+                            <i class="bi bi-geo-alt-fill location-icon"></i>
+                        </div>
+                        <div class="mb-2 col-6 ps-0 mb-3">
+                            <label>Available Seats</label>
+                            <div class="row">
+                                <div *ngFor="let label of seatsLabel; let i = index" class="col-auto px-1 ps-0 pe-2 pt-3 g-0" (click)="setSeat(label,i)">
+                                    <label class="btn btn-time" [class.active]="i==seatSelectedIdx">{{label}}</label>
+                                </div>
+                            </div>
+                            <div *ngIf="rideOffer.seats.errors && (rideOffer.seats.dirty || rideOffer.seats.touched)" class="text-danger">This is a required field</div>
+                        </div>
+                        <div class="form-group mb-2 col-6 mb-3">
+                            <label for="price">Price</label>
+                            <div class="row">
+                                <p class="price m-0 p-0 pt-2">{{generatedPrice}}$</p>
+                            </div>
+                        </div>
+                    </div>
+                    <app-alert-msg [isShowAlert]="isShowAlert" [message]="message"></app-alert-msg>
+                    <div>
+                        <button
+                        type="submit"
+                        class="mt-3 btn-bg background-yellow"
+                        >
+                        Submit
+                        </button>
+                    </div>
+                </form>
+                
+            </div>
+        </section>
+    
+    </div>
+    </section>
