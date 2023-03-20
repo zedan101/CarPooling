@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CarPool.Models;
-using Microsoft.AspNetCore.Cors;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using CarPool.Services.Interfaces;
 using System.Security.Claims;
@@ -51,6 +49,52 @@ namespace CarPool.Controllers
             return _usersService.GetUsers(userId);
         }
 
+
+        /// <summary>
+        /// Controller to return response from ChangePassword method of Users Service.
+        /// </summary>
+        /// <param name="newPass">New Password value</param>
+        /// <returns>returns response as bool</returns>
+        [HttpPatch("ChangePassword")]
+        [Authorize]
+        public bool ChangePassword(string newPass)
+        {
+            if(newPass!=null)
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                return _usersService.ChangePassword(userId, newPass).Result;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Controller to return response from UpdateProfile method of Users Service.
+        /// </summary>
+        /// <param name="userName">new userName Value</param>
+        /// <param name="profileImage">new Profile Image value</param>
+        /// <returns>returns response as bool</returns>
+        [HttpPatch("UpdateProfile")]
+        [Authorize]
+        public bool UpdateProfile([FromBody]User user)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return _usersService.UpdateProfile(userId, user.UserName, user.ProfileImage).Result;
+        }
+
+        /// <summary>
+        /// Controller to return response from Delete Profile method of Users Service.
+        /// </summary>
+        /// <returns>returns response as bool</returns>
+        [HttpDelete("DeleteProfile")]
+        [Authorize]
+        public bool DeleteProfile()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return _usersService.DeleteProfile(userId).Result;
+        } 
         /// <summary>
         /// Controller Checks the data sent from client for null and passes it to PostUserDetails method of Users Service.
         /// </summary>
@@ -71,7 +115,7 @@ namespace CarPool.Controllers
                     return _usersService.PostUserDetails(users).Result;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -98,7 +142,7 @@ namespace CarPool.Controllers
                     return _usersService.ValidateEmail(userEmail);
                 }
             }
-            catch (Exception ex) 
+            catch (Exception) 
             {
                 return false;
             }

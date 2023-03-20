@@ -80,7 +80,7 @@ export class EntryFormsComponent implements OnInit {
           var today =new Date();
           this.userData={
             userEmail:this.signUpForm.get('emailId').value,
-            profileImage:"../../../assets/images/logo.png",
+            profileImage:"",
             userName:"user",
             userId:"user"+this.datePipe.transform(today, 'ddMMyyyy')+this.signUpForm.get('emailId').value.split(0,3),
             password:this.signUpForm.get('password').value

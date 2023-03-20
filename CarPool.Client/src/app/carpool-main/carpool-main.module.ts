@@ -12,6 +12,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CaarpoolMainComponent } from './caarpool-main.component';
 import { CommonFeaturesModule } from "../common/common-features.module";
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { CommonFeaturesModule } from "../common/common-features.module";
         RidesCardComponent,
         TopMenuComponent,
         MyRidesComponent,
-        CaarpoolMainComponent],
+        CaarpoolMainComponent,
+        ProfileComponent],
     imports: [NgbModule,
         ReactiveFormsModule,
         FormsModule,

@@ -49,6 +49,81 @@ namespace CarPool.Services
         }
 
         /// <summary>
+        /// Method to Change password of the user.
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <param name="newPass">new password</param>
+        /// <returns>returns success or fail reponse as bool value</returns>
+        public async Task<bool> ChangePassword(string userId,string newPass)
+        {
+            _carPoolContext.User.First(user=> user.UserId== userId).Password = newPass;
+            await _carPoolContext.SaveChangesAsync();
+            return true;
+        }
+
+        /// <summary>
+        /// Method to update profile information of the user. 
+        /// </summary>
+        /// <param name="userId"> ID of user</param>
+        /// <param name="userName">New user name</param>
+        /// <param name="profile">new profile image</param>
+        /// <returns></returns>
+        public async Task<bool> UpdateProfile(string userId , string? userName, string? profile)
+        {
+            if(userName!=null || profile!=null)
+            {
+                _carPoolContext.User.First(user=>user.UserId == userId).ProfileImage = profile;
+                _carPoolContext.User.First(user => user.UserId == userId).Name = userName;
+                await _carPoolContext.SaveChangesAsync();
+                return true;
+            }
+            else if (userName != null)
+            {
+                _carPoolContext.User.First(user=> user.UserId== userId).Name = userName;
+                await _carPoolContext.SaveChangesAsync();
+                return true; 
+            }
+            else if (profile != null)
+            {
+                _carPoolContext.User.First(user => user.UserId == userId).ProfileImage = profile;
+                await _carPoolContext.SaveChangesAsync(); 
+                return true;
+            }
+            else
+            {
+                return false; 
+            }
+        }
+
+        /// <summary>
+        /// Method to delete profile from database;
+        /// </summary>
+        /// <param name="userId">Id of user</param>
+        /// <returns>response success or fail as bool value</returns>
+        public async Task<bool> DeleteProfile(string userId)
+        {
+            if (userId != null)
+            {
+                var usr = _carPoolContext.User.FirstOrDefault(user => user.UserId == userId);
+                if (usr != null)
+                {
+                    _carPoolContext.User.Remove(usr);
+                    await _carPoolContext.SaveChangesAsync();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        /// <summary>
         /// Method to validate the email and password of the user while login
         /// </summary>
         /// <param name="userEmail">Email of user</param>

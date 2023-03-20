@@ -20,6 +20,19 @@ export class UsersService {
     return this.httpService.get<User>(Endpoints.Users.getUser(userId));
   }
 
+  updatePassword(newPassword : string)
+  {
+    return this.httpService.patch<boolean>(Endpoints.Users.changePassword(newPassword),"");
+  }
+
+  updateProfile(user:User){
+    return this.httpService.patch<boolean>(Endpoints.Users.updateProfile(),user);
+  }
+
+  deleteProfile(){
+    return this.httpService.delete<boolean>(Endpoints.Users.deleteProfile());
+  }
+
   postUsers(user : User)
   {
     return this.httpService.post<Boolean>(Endpoints.Users.postUsers(), user);
@@ -30,6 +43,6 @@ export class UsersService {
   // }
 
   getEmailValidation(userEmail:string){
-    return this.httpService.get<Boolean>(Endpoints.Users.getEmailValidation(userEmail));
+      return this.httpService.get<Boolean>(Endpoints.Users.getEmailValidation(userEmail));
   }
 }

@@ -1,0 +1,120 @@
+<section class="background">
+    <app-top-menu></app-top-menu>
+    <div class="row ps-5 mt-5">
+        <div class="col-6 p-5 form-box-shadow background-white">
+            <div class="d-flex align-items-center justify-content-evenly mt-3">
+                <img *ngIf="user.profileImage" class="profile ms-3 mb-4" src="{{user.profileImage}}" alt="profile">
+                <img *ngIf="!user.profileImage" class="profile ms-3 mb-4" src="../../../../assets/images/logo.png" alt="profile">
+                <div>
+                    <h2 class="text-truncate ms-3 pb-1 ">User Name : {{user.userName}}</h2>
+                    <h6 class="text-truncate ms-3 pb-1">User Email: {{user.userEmail}}</h6>
+                    <h6 class="text-truncate ms-3 pb-1">User Id   : {{user.userId}}</h6>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-evenly mt-5 pt-5">
+                <button (click)="openVerticallyCentered(updatePass)" class="btn background-yellow color-white p-2 fw-bold mt-5 ">Change Password</button>
+                <button (click)="openVerticallyCentered(update)" class="btn background-purple color-white p-2 fw-bold mt-5">Update Profile</button>
+                <button (click)="openVerticallyCentered(deleteProfile)" class="btn btn-danger color-white p-2 fw-bold mt-5">Delete Account</button>
+            </div>
+        </div>
+    </div>
+    <ng-template #update let modal>
+        <div class="modal-header">
+            <h5 class="modal-title text-capitalize">Update Profile</h5>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="closeModal()"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form class="px-3" [formGroup]="updateProfile" (ngSubmit)="saveProfileData()">
+              <!-- add photo  -->
+              <div class="add-photo mb-5">
+                <div >
+                  <img class="img-thumbnail" [src]="imageUrl" *ngIf="imageUrl" />
+                  <img class="img-thumbnail" src="../../../assets/images/profile.png" *ngIf="!imageUrl" />
+                </div>
+                <div class="position-relative">
+                  <span class="photo-label" *ngIf="imageUrl"
+                    >Update Photo:</span
+                  >
+                  <input
+                    class="file-input form-control"
+                    type="file"
+                    (change)="selectImage($event)"
+                    placeholder="Image URL here"
+                    name="profileImage"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label for="newName">New Name:</label>
+                <input type="text" class="form-control" placeholder="{{user.userName}}" id="newName" formControlName="newName">
+            </div>
+            <div>
+                <button
+                type="submit"
+                class="mt-3 btn-bg background-yellow"
+                >
+                Submit
+                </button>
+            </div>
+            </form>
+          </div>
+    
+    </ng-template>
+    <ng-template #updatePass let modal>
+        <div class="modal-header">
+            <h5 class="modal-title text-capitalize">Update Password</h5>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="closeModal()"
+            ></button>
+        </div>
+        <div class="modal-body">
+            <form class="px-3" [formGroup]="updatePassword" (ngSubmit)="saveNewPass()">
+                <div class="form-group mb-3">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" class="form-control" placeholder="" id="newPass" formControlName="newPassword">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="confirmPass">Confirm Password:</label>
+                    <input type="password" class="form-control" placeholder="" id="confirmpass" formControlName="confirmPass">
+                </div>
+                <div>
+                    <button
+                    type="submit"
+                    class="mt-3 btn-bg background-purple"
+                    >
+                    Submit
+                    </button>
+                </div>
+            </form>
+        </div>    
+    </ng-template>
+    <ng-template #deleteProfile let modal>
+        <div class="modal-header">
+            <h5 class="modal-title text-capitalize">Delete Profile</h5>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="closeModal()"
+            ></button>
+        </div>
+        <div class="modal-body">
+            <h2 class="text-capitalize">Do You Really Want To Delete This Account</h2>
+            <p class="text-danger">Attention: Account will be deleted permanently</p>
+            <div class="d-flex">
+                <button (click)="deleteAccount(true) " class="btn btn-danger me-3">Yes</button>
+                <button (click)="deleteAccount(false) "class="btn btn-success">No</button>
+            </div>
+        </div>
+    </ng-template>
+</section>
+

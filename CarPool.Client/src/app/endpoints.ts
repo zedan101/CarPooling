@@ -28,11 +28,21 @@ export class Endpoints{
           {
             return `${environment.localhostUsers}/PostUser`;
           }
+
+        static changePassword(newPassword:string)
+        {
+            return `${environment.localhostUsers}/ChangePassword?newPass=${encodeURIComponent(newPassword)}`;
+        }
         
-        // static getValidation(userEmail:string,password:string){
-        //     return `${environment.localhostUsers}/ValidateUser?userEmail=${userEmail}&password=${password}`;
-        //   }
-        
+        static updateProfile()
+        {
+            return `${environment.localhostUsers}/UpdateProfile`;
+        }
+
+        static deleteProfile(){
+          return `${environment.localhostUsers}/DeleteProfile`;
+        }
+
         static getEmailValidation(userEmail:string){
             return `${environment.localhostUsers}/ValidateEmail?userEmail=${userEmail}`;
           }

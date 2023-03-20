@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { OfferRideComponent } from './components/offerride/offerride.component';
 import { TakeRideComponent } from './components/takeride/takeride.component';
 import { MyRidesComponent } from './components/my-rides/my-rides.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -28,17 +29,21 @@ const routes: Routes = [
   },
   {
     path: 'my-rides',
-    component: MyRidesComponent
+    component: MyRidesComponent,
+  },
+  {
+    path: 'my-rides/my-profile',
+    component:ProfileComponent
   },
   {
     path: 'take-ride/my-profile',
-    component: HomeComponent
+    component: ProfileComponent
   }, {
     path: 'offer-ride/my-profile',
-    component: HomeComponent
+    component: ProfileComponent
   }, {
     path: 'my-profile',
-    component: HomeComponent
+    component: ProfileComponent
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
