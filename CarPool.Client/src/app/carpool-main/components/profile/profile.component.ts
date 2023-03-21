@@ -15,6 +15,7 @@ import { UsersService } from '../../services/users.service';
 export class ProfileComponent implements OnInit {
   imageUrl!:string;
   user!:User;
+  isShowThumbnail=false;
   constructor(private userService:UsersService,private modalService: NgbModal,private authService:AuthService,private router:Router) { }
 
   async ngOnInit(){
@@ -33,7 +34,6 @@ export class ProfileComponent implements OnInit {
     newPassword : new FormControl('',[Validators.required]),
     confirmPass: new FormControl('',[Validators.required])
   })
-
   openVerticallyCentered(formModal: any) {
     this.modalService.open(formModal, { centered: true });
   }

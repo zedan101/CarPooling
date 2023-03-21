@@ -15,6 +15,7 @@ export class TopMenuComponent implements OnInit {
   userName="Nitish";
   imgLink="../../../assets/images/logo.png";
   loggedUser!:User;
+  isShowThumbnail=false;
   constructor(private authService:AuthService,private userService:UsersService) { }
 
 async  ngOnInit(){

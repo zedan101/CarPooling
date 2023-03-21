@@ -8,8 +8,24 @@ import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'home',
     component: HomeComponent
+  },
+  {
+    path:'home/offer-ride',
+    redirectTo:'offer-ride'
+  },
+  {
+    path:'home/take-ride',
+    redirectTo:'take-ride'
+  },
+  {
+    path:'home/my-rides',
+    redirectTo:'my-rides'
+  },
+  {
+    path:'home/my-profile',
+    redirectTo:'my-profile'
   },
   {
     path: 'offer-ride',
@@ -20,12 +36,16 @@ const routes: Routes = [
     component: TakeRideComponent,
   },
   {
+    path:'my-profile/my-rides',
+    redirectTo:'my-rides'
+  },
+  {
     path: 'take-ride/my-rides',
-    component: MyRidesComponent
+    redirectTo:'my-rides'
   },
   {
     path: 'offer-ride/my-rides',
-    component: MyRidesComponent
+    redirectTo:'my-rides'
   },
   {
     path: 'my-rides',
@@ -33,19 +53,20 @@ const routes: Routes = [
   },
   {
     path: 'my-rides/my-profile',
-    component:ProfileComponent
+    redirectTo:'my-profile'
   },
   {
     path: 'take-ride/my-profile',
-    component: ProfileComponent
+    redirectTo:'my-profile'
   }, {
     path: 'offer-ride/my-profile',
-    component: ProfileComponent
-  }, {
+    redirectTo:'my-profile'
+  },
+ {
     path: 'my-profile',
     component: ProfileComponent
   },
-  { path: '**', redirectTo: '', pathMatch: 'full' },
+  { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 
 @NgModule({

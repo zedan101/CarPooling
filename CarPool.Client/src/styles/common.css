@@ -79,6 +79,10 @@ body{
     cursor: pointer;
 }
 
+.color-white{
+    color:white;
+}
+
 .light-circle{
     font-size: 40% !important;
     color: #E0E0E0;

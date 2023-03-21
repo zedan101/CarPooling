@@ -3,8 +3,9 @@
     <div class="row ps-5 mt-5">
         <div class="col-6 p-5 form-box-shadow background-white">
             <div class="d-flex align-items-center justify-content-evenly mt-3">
-                <img *ngIf="user.profileImage" class="profile ms-3 mb-4" src="{{user.profileImage}}" alt="profile">
-                <img *ngIf="!user.profileImage" class="profile ms-3 mb-4" src="../../../../assets/images/logo.png" alt="profile">
+                <img *ngIf="!isShowThumbnail" class="profile ms-3 mb-4" src="{{user.profileImage}}" alt="profile" (error)="isShowThumbnail=true">
+                <div *ngIf="isShowThumbnail" class="profile rounded-circle background-yellow"><span class="d-flex justify-content-center color-white m-4 fw-normal display-1">{{user.userName[0].toUpperCase()}}</span></div>
+                <!-- <img *ngIf="!user.profileImage" class="profile ms-3 mb-4" src="../../../../assets/images/logo.png" alt="profile"> -->
                 <div>
                     <h2 class="text-truncate ms-3 pb-1 ">User Name : {{user.userName}}</h2>
                     <h6 class="text-truncate ms-3 pb-1">User Email: {{user.userEmail}}</h6>
@@ -33,11 +34,10 @@
               <!-- add photo  -->
               <div class="add-photo mb-5">
                 <div >
-                  <img class="img-thumbnail" [src]="imageUrl" *ngIf="imageUrl" />
-                  <img class="img-thumbnail" src="../../../assets/images/profile.png" *ngIf="!imageUrl" />
+                  <img class="img-thumbnail" [src]="imageUrl" *ngIf="imageUrl" (error)="isShowThumbnail=true"/>
                 </div>
                 <div class="position-relative">
-                  <span class="photo-label" *ngIf="imageUrl"
+                  <span class="photo-label"
                     >Update Photo:</span
                   >
                   <input
