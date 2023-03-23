@@ -46,7 +46,7 @@
                     <div class="form-group  mb-3">
                         <label>Time</label>
                          <div class="row pt-2">
-                            <div *ngFor="let label of labels; let i = index" class="col-auto px-2 ps-0 py-1 g-0">
+                            <div *ngFor="let label of labels; let i = index" class="col-auto px-3 ps-0 py-1 g-0">
                                 <input type="radio" class="btn-check" formControlName="time" value="{{label}}" id="{{i}}" autocomplete="off" />
                                 <label class="btn btn-time" [class.active]="labels[i]==takeRide.time.value" for="{{i}}">{{label}}</label>
                             </div>

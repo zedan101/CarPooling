@@ -35,7 +35,7 @@
                             </div>
                             <div *ngIf="rideOffer.date.errors && (rideOffer.date.dirty || rideOffer.date.touched)" class="text-danger">This is a required field</div>
                         </div>
-                        <div class="right-icon d-flex flex-column float-end col-2 pt-3">
+                        <div class="right-icon d-flex flex-column float-end col-2 pt-2">
                             <i class="bi bi-circle-fill dark-circle"></i>
                             <i class="bi bi-circle-fill light-circle px-1 py-1"></i>
                             <i class="bi bi-circle-fill light-circle px-1 py-1"></i>
@@ -47,7 +47,7 @@
                     <div class="form-group mb-3 ">
                         <label>Time</label>
                         <div class="row pt-2">
-                            <div *ngFor="let label of labels; let i = index" class="col-auto px-2 py-1">
+                            <div *ngFor="let label of labels; let i = index" class="col-auto px-3 py-1 g-0 ps-0">
                                 <input type="radio" class="btn-check" formControlName="time" value="{{label}}" id="{{i}}" autocomplete="off" />
                                 <label class="btn btn-time" [class.active]="labels[i]==rideOffer.time.value" for="{{i}}">{{label}}</label>
                             </div>
