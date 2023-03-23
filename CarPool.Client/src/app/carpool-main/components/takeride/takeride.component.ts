@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Ride } from 'src/app/carpool-main/model/ride.model';
 import { BookRideReq } from 'src/app/carpool-main/model/book-ride-req.model';
 import { RidesService } from 'src/app/carpool-main/services/rides.service';
-import { lastValueFrom } from 'rxjs';
+import { isEmpty, lastValueFrom, Observable, of } from 'rxjs';
 import {timeLabel}  from 'src/assets/static-data/static-data';
 import { Route, Router } from '@angular/router';
 
@@ -13,10 +13,9 @@ import { Route, Router } from '@angular/router';
   styleUrls: ['./takeride.component.css']
 })
 export class TakeRideComponent implements OnInit {
-  userName!:string;
-  imgLink!:string;
+  
   inputData!:BookRideReq; 
-  rides: Array<Ride>=[];
+  rides!: Observable<Ride[]>;
   timeSelectedIdx?:number;
   isDropdown=false;
   labels = timeLabel;
@@ -26,8 +25,6 @@ export class TakeRideComponent implements OnInit {
   constructor(private rideService : RidesService, private router:Router) { }
 
   ngOnInit(): void {
-    this.userName="Nitish";
-    this.imgLink="../../../assets/images/logo.png";
   }
 
   takeRideForm: any = new FormGroup({
@@ -54,8 +51,8 @@ export class TakeRideComponent implements OnInit {
           date : this.takeRide.date.value,
           time : this.labels.findIndex(time=> time==this.takeRide.time.value)
         }
-        this.rides = await lastValueFrom(this.rideService.getRides(this.inputData)); 
-        if(this.rides.length==0){
+        this.rides=this.rideService.getRides(this.inputData);
+        if(this.rides.pipe(isEmpty(),)){
           this.isShowAlert=true;
           this.message="No matches Found!!!";
           this.takeRideForm.reset();
@@ -78,7 +75,7 @@ export class TakeRideComponent implements OnInit {
     var res =await lastValueFrom(this.rideService.booking(1,ride.rideId));
     this.takeRideForm.reset();
     this.timeSelectedIdx=undefined;
-    this.rides=[];
+    this.rides=of([]);
     this.isShowAlert=true;
     this.message="Ride Booked Successfully!!!"
     setTimeout(()=>{

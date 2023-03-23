@@ -18,8 +18,10 @@ export class TopMenuComponent implements OnInit {
   isShowThumbnail=false;
   constructor(private authService:AuthService,private userService:UsersService) { }
 
-async  ngOnInit(){
-  this.loggedUser = await lastValueFrom(this.userService.getUserDetails())
+ngOnInit(){
+  this.userService.getUserDetails().subscribe(data=>{
+    this.loggedUser=data;
+  })
   }
 
   logOut(){

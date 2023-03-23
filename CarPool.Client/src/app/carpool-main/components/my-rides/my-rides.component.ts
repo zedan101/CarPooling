@@ -13,18 +13,22 @@ export class MyRidesComponent implements OnInit {
   bookedRides:Array<Ride>=[];
   offeredRides:Array<Ride>=[];
   tempRide:Ride=new Ride();
-
+  bookRides:Array<Ride>=[];
   constructor(private rideService:RidesService) { }
 
-  async ngOnInit(){
-    var bookRides =  await lastValueFrom(this.rideService.getBookedHistory());
-    this.offeredRides = await lastValueFrom(this.rideService.getOOfferedHistory());
-    bookRides.forEach(rides=>
-      rides.rideTakenBy.forEach(element => {
-        this.tempRide = rides;
+  ngOnInit(){
+    
+    this.rideService.getBookedHistory().subscribe(data =>{
+      data.forEach(obj=> obj.rideTakenBy.forEach(element => {
+        this.tempRide = obj;
         this.tempRide.rideTakenBy.forEach(e => e=element);
         this.bookedRides.push(this.tempRide);
-      }))
+      }));
+    }
+    );
+    this.rideService.getOOfferedHistory().subscribe(data=>{
+      data.forEach(obj=> this.offeredRides.push(obj));
+    });
   }
 
 }

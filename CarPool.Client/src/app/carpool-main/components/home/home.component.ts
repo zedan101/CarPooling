@@ -9,17 +9,15 @@ import { UsersService } from 'src/app/carpool-main/services/users.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-  userName!:string;
-  imgLink!:string;
-  userList!:Array<User>;
+  user!:User;
   isDropdown=false;
 
   constructor(private userService : UsersService) { }
 
   async ngOnInit(){
-    this.userName="Nitish";
-    this.imgLink="../../../assets/images/logo.png";
+    this.userService.getUserDetails().subscribe(data=>{
+      this.user=data;
+    })
   }
 
 }
