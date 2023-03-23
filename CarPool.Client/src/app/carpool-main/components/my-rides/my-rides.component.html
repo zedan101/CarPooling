@@ -2,13 +2,13 @@
  <app-top-menu></app-top-menu>
  <section class="row mt-5 pt-5 ps-5 ms-1">
     <div class="booked-ride col-5">
-        <label class="head-text background-purple d-flex align-items-center justify-content-center">Booked rides</label>
+        <label class="head-text ms-3 background-purple d-flex align-items-center justify-content-center">Booked rides</label>
         <div class="row">
             <app-ridescard class="col gy-5" *ngFor="let ride of bookedRides" [isOffer]="false" [ride]="ride" [start]="ride.location[0]" [end]="ride.location[ride.location.length-1]"></app-ridescard>
         </div>
     </div>
     <div class="offered-ride col-6">
-        <label class="head-text background-yellow d-flex align-items-center justify-content-center">Offered rides</label>
+        <label class="head-text ms-3 background-yellow d-flex align-items-center justify-content-center">Offered rides</label>
         <div class="row">
             <app-ridescard class="col gy-5" *ngFor="let ride of offeredRides" [isOffer]="true" [ride]="ride" [start]="ride.location[0]" [end]="ride.location[ride.location.length-1]"></app-ridescard>
         </div>
