@@ -80,7 +80,6 @@ export class OfferRideComponent implements OnInit {
       ride.time = this.labels.indexOf(this.rideOffer.time.value);
       ride.numberOfSeatsAvailable = this.seatsLabel.indexOf(this.rideOffer.seats.value) + 1;
       ride.price = 180;
-      var crntDate=new Date();
       ride.rideId = "";
       await lastValueFrom(this.rideService.offerRide(ride));
       this.offerRideForm.reset();

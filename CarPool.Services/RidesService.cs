@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using Carpool.DataLayer;
 using CarPool.DataLayer.Models;
 using CarPool.Models;
@@ -11,10 +12,19 @@ namespace CarPool.Services
     {
 
         private readonly CarPoolContext _carPoolContext;
-        public RidesService(CarPoolContext carPoolContext)
+        private readonly IMapperConfig _mapperConfig;
+        public RidesService(CarPoolContext carPoolContext, IMapperConfig mapConfig)
         {
             _carPoolContext = carPoolContext;
+            _mapperConfig = mapConfig;
         }
+
+        
+
+        MapperConfig mapperConfig = new();
+
+
+
 
         /// <summary>
         /// Method to get user input and match the input with available rides and send back the matched rides.
@@ -25,24 +35,16 @@ namespace CarPool.Services
         /// <param name="destination">Destination</param>
         /// <returns>Returs list of rides matching the conditions</returns>
         public async Task<List<Ride>> GetMatches(string userId,DateTime date, int time, string startLocation, string destination)
-            {
+            { 
                 var matches = new List<Ride>();
                 List<OfferedRide> res =await _carPoolContext.OfferedRide.Include(or=>or.Locations).Include(or=>or.BookedRides).Where(rides => rides.UserId!=userId && rides.Date == date && rides.Time == time && (rides.Locations.Any(loc => loc.Location == startLocation) && rides.Locations.Any(loc => loc.Location == destination) && rides.AvailableSeats > 0)).ToListAsync();
-                var match = new Ride();
                 for(int i =0; i < res.Count; i++)
                 {
-                    match.Location = res[i].Locations.OrderBy(loc=>loc.SequenceNum).Select(loc => loc.Location).ToList();
-                    match.Date = res[i].Date;
-                    match.Time = res[i].Time;
-                    match.NumberOfSeatsAvailable= res[i].AvailableSeats;
-                    match.Price= res[i].Price;
-                    match.RideId= res[i].RideId;
-                    match.RideOfferedBy = res[i].UserId;
-                    match.RideTakenBy= res[i].BookedRides.Select(br=> br.UserId).ToList();
+                    var index = i;
+                    var match = _mapperConfig.OfferedRideToRide().Map<Ride>(res[index]);
                     matches.Add(match);    
                 }
             return matches.Where(rides => rides.Location.FindIndex(loc => loc == startLocation) < rides.Location.FindIndex(loc => loc == destination)).ToList();
-
             }
 
 
@@ -53,14 +55,9 @@ namespace CarPool.Services
         /// <returns>Success or not response as bool</returns>
             public async Task<bool> OfferRide(Ride ride)
             {
-                _carPoolContext.OfferedRide.Add(new() { 
-                    RideId = ride.RideId,
-                    Date = ride.Date,
-                    Time = ride.Time,
-                    AvailableSeats = ride.NumberOfSeatsAvailable,
-                    Price = ride.Price,
-                    UserId = ride.RideOfferedBy,
-                });
+                OfferedRide offeredRide = _mapperConfig.RideToOfferedRide().Map<OfferedRide>(ride);
+
+                _carPoolContext.OfferedRide.Add(offeredRide);
                 await _carPoolContext.SaveChangesAsync();
                 int i = -1;
                 foreach (var loc in ride.Location)
@@ -91,18 +88,10 @@ namespace CarPool.Services
                 List<OfferedRide> res =await _carPoolContext.OfferedRide.Include(or => or.Locations).Include(or => or.BookedRides).Where(rides => rides.BookedRides.Any(br=> br.UserId == userId)).ToListAsync();
                 for (int i = 0; i < res.Count; i++)
                 {
-                    matches.Add(new()
-                    {
-                        Location = res[i].Locations.OrderBy(loc => loc.SequenceNum).Select(loc => loc.Location).ToList(),
-                        Date = res[i].Date,
-                        Time = res[i].Time,
-                        NumberOfSeatsAvailable = res[i].AvailableSeats,
-                        Price = res[i].Price,
-                        RideId = res[i].RideId,
-                        RideOfferedBy = res[i].UserId,
-                        RideTakenBy = res[i].BookedRides.Select(br => br.UserId).ToList()
-
-                    });
+                    matches.Add(new Ride());
+                    var index = i;
+                    matches[index] = _mapperConfig.OfferedRideToRide().Map<Ride>(res[index]);
+                  
                 }
                 return matches;
             }
@@ -119,18 +108,9 @@ namespace CarPool.Services
                 List<OfferedRide> res = await _carPoolContext.OfferedRide.Include(or => or.Locations).Include(or => or.BookedRides).Where(rides => rides.UserId==userId).ToListAsync();
                 for (int i = 0; i < res.Count; i++)
                 {
-                    matches.Add(new() {
-                       Location = res[i].Locations.OrderBy(loc => loc.SequenceNum).Select(loc => loc.Location).ToList(),
-                       Date = res[i].Date,
-                        Time = res[i].Time,
-                        NumberOfSeatsAvailable = res[i].AvailableSeats,
-                        Price = res[i].Price,
-                        RideId = res[i].RideId,
-                        RideOfferedBy = res[i].UserId,
-                        RideTakenBy = res[i].BookedRides.Select(br => br.UserId).ToList()
-                
-                    });
-                    
+                    matches.Add(new Ride());
+                    var index = i;
+                    matches[index] = _mapperConfig.OfferedRideToRide().Map<Ride>(res[index]);
                 }
                 return matches;
             }

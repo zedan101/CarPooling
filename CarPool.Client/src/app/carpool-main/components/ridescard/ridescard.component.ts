@@ -17,6 +17,7 @@ export class RidesCardComponent implements OnInit {
   @Input() end!:string;
   usr!:User;
   labels = timeLabel;
+  isShowThumbnail=false;
   constructor(private userService:UsersService) { }
 
   async ngOnInit(){

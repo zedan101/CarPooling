@@ -1,11 +1,7 @@
 ﻿using CarPool.Models;
 using CarPool.Services.Interfaces;
 using Carpool.DataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CarPool.DataLayer.Models;
 
 namespace CarPool.Services
 {
@@ -13,11 +9,12 @@ namespace CarPool.Services
     {
 
         private readonly CarPoolContext _carPoolContext;
-        public UsersService(CarPoolContext carPoolContext)
+        private readonly IMapperConfig _mapperConfig;
+        public UsersService(CarPoolContext carPoolContext, IMapperConfig mapConfig)
         {
             _carPoolContext = carPoolContext;
+            _mapperConfig = mapConfig;
         }
-
         /// <summary>
         /// Method to get user details. 
         /// </summary>
@@ -25,8 +22,9 @@ namespace CarPool.Services
         /// <returns>instence of Users class contains data of user whoes id matches the argument </returns>
         public User GetUsers(string userId)
         {
-            var user = _carPoolContext.User.FirstOrDefault(user => user.UserId == userId);
-            return new User() { UserEmail = user.UserEmail, UserName = user.Name,Password =user.Password , ProfileImage = user.ProfileImage , UserId=user.UserId};
+            var user = _mapperConfig.UserEntityToUser().Map<User>(_carPoolContext.User.FirstOrDefault(user => user.UserId == userId));
+            return user;
+           // return new User() { UserEmail = user.UserEmail, UserName = user.Name,Password =user.Password , ProfileImage = user.ProfileImage , UserId=user.UserId};
         }
 
         /// <summary>
@@ -36,14 +34,8 @@ namespace CarPool.Services
         /// <returns>Success or not response as bool</returns>
         public async Task<bool> PostUserDetails(User users)
         {
-            _carPoolContext.User.Add(new DataLayer.Models.UserEntity()
-            {
-                UserEmail= users.UserEmail,
-                Name = users.UserName,
-                UserId= users.UserId,
-                Password= users.Password,
-                ProfileImage= users.ProfileImage,
-            });
+            UserEntity user = _mapperConfig.UserToUserEntity().Map<UserEntity>(users);
+            _carPoolContext.User.Add(user);
             await _carPoolContext.SaveChangesAsync();
             return true;
         }

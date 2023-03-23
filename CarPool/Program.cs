@@ -21,7 +21,7 @@ namespace CarPool
             // Add services to the container.
             builder.Services.AddScoped<IUsersService, UsersService>();
             builder.Services.AddScoped<IRidesService, RidesService>();
-
+            builder.Services.AddScoped<IMapperConfig, MapperConfig>();
             builder.Services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;

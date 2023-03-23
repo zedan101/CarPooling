@@ -57,7 +57,6 @@ export class ProfileComponent implements OnInit {
       var response=await lastValueFrom(this.userService.updateProfile(this.user))
       if(response){
         this.closeModal();
-        this.router.navigate(['my-profile']);
       }
     }
   }
