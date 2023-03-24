@@ -7,25 +7,11 @@ import { MyRidesComponent } from './components/my-rides/my-rides.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
+  
+  { path: '', redirectTo: 'home',pathMatch:'full'},
   {
     path: 'home',
     component: HomeComponent
-  },
-  {
-    path:'home/offer-ride',
-    redirectTo:'offer-ride'
-  },
-  {
-    path:'home/take-ride',
-    redirectTo:'take-ride'
-  },
-  {
-    path:'home/my-rides',
-    redirectTo:'my-rides'
-  },
-  {
-    path:'home/my-profile',
-    redirectTo:'my-profile'
   },
   {
     path: 'offer-ride',
@@ -36,31 +22,8 @@ const routes: Routes = [
     component: TakeRideComponent,
   },
   {
-    path:'my-profile/my-rides',
-    redirectTo:'my-rides'
-  },
-  {
-    path: 'take-ride/my-rides',
-    redirectTo:'my-rides'
-  },
-  {
-    path: 'offer-ride/my-rides',
-    redirectTo:'my-rides'
-  },
-  {
     path: 'my-rides',
-    component: MyRidesComponent,
-  },
-  {
-    path: 'my-rides/my-profile',
-    redirectTo:'my-profile'
-  },
-  {
-    path: 'take-ride/my-profile',
-    redirectTo:'my-profile'
-  }, {
-    path: 'offer-ride/my-profile',
-    redirectTo:'my-profile'
+    component: MyRidesComponent
   },
  {
     path: 'my-profile',

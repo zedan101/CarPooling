@@ -9,9 +9,10 @@
         <div *ngIf="isShowThumbnail" (click)="isDropdown?isDropdown=false:isDropdown=true" class="z-index-top my-auto ms-2 profile-image rounded-circle background-yellow"><span class="d-flex justify-content-center color-white m-2 fw-normal ">{{loggedUser.userName[0].toUpperCase()}}</span></div>
                 
         <div *ngIf="isDropdown" class="profile-dropdown row">
-            <a href="#" routerLink="my-profile" class="col-12 d-flex align-items-center justify-content-center">Profile</a>
-            <a href="#" routerLink="my-rides" class="col-12 d-flex align-items-center justify-content-center">My Rides</a>
-            <a href="#" (click)="logOut()" class="col-12 d-flex align-items-center justify-content-center">Logout</a>
+            <a (click)="openMyProfile()" class="cursor-pointer col-12 d-flex align-items-center justify-content-center">Profile</a>
+            <a (click)="openMyRides()" class="cursor-pointer col-12 d-flex align-items-center justify-content-center">My Rides</a>
+            <a (click)="logOut()" class="cursor-pointer col-12 d-flex align-items-center justify-content-center">Logout</a>
+
         </div>
     </div>
 </div>

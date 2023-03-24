@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { User } from 'src/app/carpool-main/model/user.model';
 import { UsersService } from 'src/app/carpool-main/services/users.service';
@@ -12,12 +13,19 @@ export class HomeComponent implements OnInit {
   user!:User;
   isDropdown=false;
 
-  constructor(private userService : UsersService) { }
+  constructor(private userService : UsersService,private router:Router) { }
 
   async ngOnInit(){
     this.userService.getUserDetails().subscribe(data=>{
       this.user=data;
     })
+  }
+
+  openTakeRide(){
+    this.router.navigate(['carpool/take-ride'])
+  }
+  openOfferRide(){
+    this.router.navigate(['carpool/offer-ride'])
   }
 
 }
