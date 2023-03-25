@@ -6,7 +6,6 @@ import { UsersService } from 'src/app/carpool-main/services/users.service';
 import { DatePipe } from '@angular/common';
 import { lastValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { AuthResponse } from '../../models/auth-response.model';
 
 @Component({
   selector: 'app-entryforms',
@@ -76,7 +75,6 @@ export class EntryFormsComponent implements OnInit {
           
         }
         else{
-          // console.log(this.signUpForm.get('emailId').value)
           var today =new Date();
           this.userData={
             userEmail:this.signUpForm.get('emailId').value,

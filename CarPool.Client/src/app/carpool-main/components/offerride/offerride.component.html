@@ -87,6 +87,7 @@
                 >
                     <div class="row">
                         <div class="col-10 gx-0 mb-3">
+                            <a (click)="addStops()" *ngIf="offerRideForm.controls.stops.controls.length==0" class="cursor-pointer d-flex justify-content-end btn-style-none add-icon"><i class="bi bi-plus"></i></a>                                   
                             <div formArrayName="stops" *ngFor="let number of offerRideForm.controls.stops.controls; let i = index"  class="form-group border-bottom border-primary  mb-2">
                                 <label for="from">Stop {{i+1}}</label>
                                 <div class="d-flex">
@@ -124,7 +125,6 @@
                             </div>
                         </div>
                     </div>
-                    <app-alert-msg [isShowAlert]="isShowAlert" [message]="message"></app-alert-msg>
                     <div>
                         <button
                         type="submit"
@@ -137,6 +137,7 @@
                 
             </div>
         </section>
+        <app-alert-msg [isShowAlert]="isShowAlert" [message]="message"></app-alert-msg>
     
     </div>
     </section>

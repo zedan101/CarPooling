@@ -15,7 +15,7 @@ import { Route, Router } from '@angular/router';
 export class TakeRideComponent implements OnInit {
   
   inputData!:BookRideReq; 
-  rides$!: Observable<Ride[]>;
+  rides!: Ride[];
   timeSelectedIdx?:number;
   isDropdown=false;
   labels = timeLabel;
@@ -51,11 +51,11 @@ export class TakeRideComponent implements OnInit {
           date : this.takeRide.date.value,
           time : this.labels.findIndex(time=> time==this.takeRide.time.value)
         }
-        this.rides$=this.rideService.getRides(this.inputData);
-        if(this.rides$.pipe(isEmpty(),)){
+        this.rides= await lastValueFrom(this.rideService.getRides(this.inputData));
+        if(this.rides.length==0){
           this.isShowAlert=true;
           this.message="No matches Found!!!";
-          this.takeRideForm.reset();
+          // this.takeRideForm.reset();
           this.timeSelectedIdx=undefined;
           setTimeout(()=>{
             this.isShowAlert=false;
@@ -75,7 +75,7 @@ export class TakeRideComponent implements OnInit {
     var res =await lastValueFrom(this.rideService.booking(1,ride.rideId));
     this.takeRideForm.reset();
     this.timeSelectedIdx=undefined;
-    this.rides$=of([]);
+    this.rides=[];
     this.isShowAlert=true;
     this.message="Ride Booked Successfully!!!"
     setTimeout(()=>{

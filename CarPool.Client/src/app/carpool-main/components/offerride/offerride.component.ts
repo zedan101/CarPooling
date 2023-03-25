@@ -43,7 +43,6 @@ export class OfferRideComponent implements OnInit {
 
   toogleRide(){
      this.router.navigate(['carpool/take-ride']);
-
   }
   
   
