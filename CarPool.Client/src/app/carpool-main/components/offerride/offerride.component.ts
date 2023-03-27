@@ -86,6 +86,7 @@ export class OfferRideComponent implements OnInit {
       if(res){
         this.toastService.show("Ride Created Successfully!!!", { classname: 'bg-success text-light'});
         this.offerRideForm.reset();
+        this.isNextPressed=false;
       }else{
         this.toastService.show("Something Went Wrong...", { classname: 'bg-danger text-light'});
       }
