@@ -22,6 +22,7 @@ export class TakeRideComponent implements OnInit {
   isChecked = true;
   isShowAlert!:boolean;
   message!:string;
+  crntDate = new Date();
   constructor(private rideService : RidesService, private router:Router) { }
 
   ngOnInit(): void {

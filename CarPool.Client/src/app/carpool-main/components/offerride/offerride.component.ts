@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -25,6 +26,7 @@ export class OfferRideComponent implements OnInit {
   isChecked=false;
   isShowAlert!:boolean;
   message!:string;
+  crntDate = new Date();
   constructor(private fb: FormBuilder,private rideService: RidesService,private router:Router) { }
 
   ngOnInit(): void {
@@ -44,7 +46,6 @@ export class OfferRideComponent implements OnInit {
   toogleRide(){
      this.router.navigate(['carpool/take-ride']);
   }
-  
   
   get rideOffer() { return this.offerRideForm.controls; };
 

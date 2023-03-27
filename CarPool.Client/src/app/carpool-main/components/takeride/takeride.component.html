@@ -30,7 +30,7 @@
                             <div *ngIf="takeRide.to.errors && (takeRide.to.dirty || takeRide.to.touched)" class="text-danger">This is a required field</div>
                             <div class="form-group mb-3 border-bottom border-primary ">
                                 <label for="date">Date</label>
-                                <input type="date" class="form-control" placeholder="xx/mm/yyyy"  id="date"  formControlName="date">
+                                <input type="date" class="form-control" min="{{crntDate|date:'yyyy-MM-dd'}}" placeholder="xx/mm/yyyy"  id="date"  formControlName="date">
                             </div>
                             <div *ngIf="takeRide.date.errors && (takeRide.date.dirty || takeRide.date.touched)" class="text-danger">This is a required field</div>
                         </div>
