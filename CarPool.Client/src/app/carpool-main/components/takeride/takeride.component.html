@@ -57,7 +57,6 @@
                         <button
                         type="submit"
                         class="mx-auto mt-3 btn-bg background-yellow"
-                        
                         >
                         Submit
                         </button>
@@ -70,7 +69,6 @@
             <h2 class="purple text-bolder">Your Matches</h2>
             <div class="row">
                 <app-ridescard (click)="booking(ride)" class="col gy-5  cursor-pointer" *ngFor="let ride of rides" [start]="inputData.from" [end]="inputData.to" [isOffer]="false" [ride]="ride"></app-ridescard>
-                <app-alert-msg [isShowAlert]="isShowAlert" [message]="message"></app-alert-msg>
             </div>
         </section>
     </section>

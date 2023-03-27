@@ -7,22 +7,24 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app.routing.module';
 import { DatePipe } from '@angular/common';
 import { TokenInterceptorService } from './common/services/token-interceptor.service';
+import { CommonFeaturesModule } from "./common/common-features.module";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserModule, HttpClientModule, NgbModule,
-    ReactiveFormsModule,
-    FormsModule,
-    AppRoutingModule,
-  ],
-  providers: [DatePipe,{
-    provide: HTTP_INTERCEPTORS,
-    useClass: TokenInterceptorService,
-    multi: true,
-  },],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+    ],
+    providers: [DatePipe, {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptorService,
+            multi: true,
+        },],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule, HttpClientModule, NgbModule,
+        ReactiveFormsModule,
+        FormsModule,
+        AppRoutingModule,
+        CommonFeaturesModule
+    ]
 })
 export class AppModule { }

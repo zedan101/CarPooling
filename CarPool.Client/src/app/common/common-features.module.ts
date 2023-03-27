@@ -1,18 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AlertMsgComponent } from './components/alert-msg/alert-msg.component';
+import { ToastComponent } from './components/toast/toast.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
 @NgModule({
   declarations: [
-    AlertMsgComponent
+    ToastComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    NgbModule
   ],
   exports: [
-    AlertMsgComponent
+    ToastComponent
   ],
 })
 export class CommonFeaturesModule { }

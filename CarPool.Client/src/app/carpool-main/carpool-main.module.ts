@@ -7,7 +7,6 @@ import { TakeRideComponent } from './components/takeride/takeride.component';
 import { RidesCardComponent } from './components/ridescard/ridescard.component';
 import { TopMenuComponent } from './components/top-menu/top-menu.component';
 import { MyRidesComponent } from './components/my-rides/my-rides.component';
-import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CaarpoolMainComponent } from './caarpool-main.component';
@@ -23,7 +22,8 @@ import { ProfileComponent } from './components/profile/profile.component';
         TopMenuComponent,
         MyRidesComponent,
         CaarpoolMainComponent,
-        ProfileComponent],
+        ProfileComponent,
+        ],
     imports: [NgbModule,
         ReactiveFormsModule,
         FormsModule,

@@ -116,7 +116,7 @@
                                     <label class="btn btn-time" [class.active]="i==seatSelectedIdx">{{label}}</label>
                                 </div>
                             </div>
-                            <div *ngIf="rideOffer.seats.errors && (rideOffer.seats.dirty || rideOffer.seats.touched)" class="text-danger">This is a required field</div>
+                            <div *ngIf="rideOffer.seats.errors" class="text-danger">This is a required field</div>
                         </div>
                         <div class="form-group mb-2 col-6 mb-3">
                             <label for="price">Price</label>
@@ -137,7 +137,6 @@
                 
             </div>
         </section>
-        <app-alert-msg [isShowAlert]="isShowAlert" [message]="message"></app-alert-msg>
     
     </div>
     </section>

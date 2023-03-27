@@ -1,10 +1,11 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgbToast } from '@ng-bootstrap/ng-bootstrap';
 import { lastValueFrom } from 'rxjs';
 import { Ride } from 'src/app/carpool-main/model/ride.model';
 import { RidesService } from 'src/app/carpool-main/services/rides.service';
+import { ToastService } from 'src/app/common/services/toast.service';
 import { timeLabel,seatLabel } from 'src/assets/static-data/static-data';
 
 @Component({
@@ -24,13 +25,13 @@ export class OfferRideComponent implements OnInit {
   labels = timeLabel;
   seatsLabel = seatLabel;
   isChecked=false;
-  isShowAlert!:boolean;
-  message!:string;
   crntDate = new Date();
-  constructor(private fb: FormBuilder,private rideService: RidesService,private router:Router) { }
+  @ViewChild('toast') toaster!: ElementRef;
+  constructor(private fb: FormBuilder,private rideService: RidesService,private router:Router,public toastService: ToastService) { }
 
   ngOnInit(): void {
   }
+
   offerRideForm: any = new FormGroup({
     from: new FormControl('',[Validators.required]),
     to: new FormControl('', [Validators.required]),
@@ -81,22 +82,16 @@ export class OfferRideComponent implements OnInit {
       ride.numberOfSeatsAvailable = this.seatsLabel.indexOf(this.rideOffer.seats.value) + 1;
       ride.price = 180;
       ride.rideId = "";
-      await lastValueFrom(this.rideService.offerRide(ride));
-      this.offerRideForm.reset();
-      this.isShowAlert = true;
-      this.message="Ride Created Successfully!!!"
-      setTimeout(() => {
-        this.isShowAlert = false;
-      }, 5000);
-      this.isNextPressed=false;
+      var res=await lastValueFrom(this.rideService.offerRide(ride));
+      if(res){
+        this.toastService.show("Ride Created Successfully!!!", { classname: 'bg-success text-light'});
+        this.offerRideForm.reset();
+      }else{
+        this.toastService.show("Something Went Wrong...", { classname: 'bg-danger text-light'});
+      }
     }
     else{
-      
-      this.isShowAlert = true;
-      this.message="Invalid Inputs"
-      setTimeout(() => {
-        this.isShowAlert = false;
-      }, 5000);
+      this.toastService.show("Invalid Inputs", { classname: 'bg-danger text-light'});
     }
 
      

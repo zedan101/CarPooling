@@ -6,6 +6,7 @@ import { RidesService } from 'src/app/carpool-main/services/rides.service';
 import { isEmpty, lastValueFrom, Observable, of } from 'rxjs';
 import {timeLabel}  from 'src/assets/static-data/static-data';
 import { Route, Router } from '@angular/router';
+import { ToastService } from 'src/app/common/services/toast.service';
 
 @Component({
   selector: 'app-takeride',
@@ -20,10 +21,8 @@ export class TakeRideComponent implements OnInit {
   isDropdown=false;
   labels = timeLabel;
   isChecked = true;
-  isShowAlert!:boolean;
-  message!:string;
   crntDate = new Date();
-  constructor(private rideService : RidesService, private router:Router) { }
+  constructor(private rideService : RidesService, private router:Router,private toastService:ToastService) { }
 
   ngOnInit(): void {
   }
@@ -54,21 +53,11 @@ export class TakeRideComponent implements OnInit {
         }
         this.rides= await lastValueFrom(this.rideService.getRides(this.inputData));
         if(this.rides.length==0){
-          this.isShowAlert=true;
-          this.message="No matches Found!!!";
-          // this.takeRideForm.reset();
-          this.timeSelectedIdx=undefined;
-          setTimeout(()=>{
-            this.isShowAlert=false;
-          },5000); 
+          this.toastService.show("No matches Found!!!", { classname: 'background-yellow text-light'});
         }
     }
     else{
-      this.isShowAlert=true;
-      this.message="Invalid Inputs!!!"
-      setTimeout(()=>{
-        this.isShowAlert=false;
-      },5000);
+    this.toastService.show("Invalid Input", { classname: 'bg-danger text-light'});
     }
   }
 
@@ -77,11 +66,7 @@ export class TakeRideComponent implements OnInit {
     this.takeRideForm.reset();
     this.timeSelectedIdx=undefined;
     this.rides=[];
-    this.isShowAlert=true;
-    this.message="Ride Booked Successfully!!!"
-    setTimeout(()=>{
-      this.isShowAlert=false;
-    },5000); 
+    this.toastService.show("Ride Booked Successfully!!!", { classname: 'bg-success text-light'});
   }
 
 }
