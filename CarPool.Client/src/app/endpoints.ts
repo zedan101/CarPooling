@@ -50,19 +50,19 @@ export class Endpoints{
 
     static Rides = class{
         static getRides(date : Date , time:number, startLocation:string , destination:string){
-            return `${environment.localhostRides}/GetRideMatches?date=${date}&time=${time}&startLocation=${startLocation}&destination=${destination}`;
+            return `${environment.localhostRides}/RideMatches?date=${date}&time=${time}&startLocation=${startLocation}&destination=${destination}`;
         }
 
         static pushRide(){
-            return `${environment.localhostRides}/PushRide`;
+            return `${environment.localhostRides}/OfferARide`;
         }
 
         static getBookedHistory(){
-            return `${environment.localhostRides}/GetBookedHistory`;
+            return `${environment.localhostRides}/BookedHistory`;
         }
 
         static getOfferedHistory(){
-          return `${environment.localhostRides}/GetOfferedHistory`;
+          return `${environment.localhostRides}/OfferedHistory`;
         }
         
         static booking(seat:number,rideId:string){

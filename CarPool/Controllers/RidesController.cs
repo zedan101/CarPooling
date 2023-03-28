@@ -15,14 +15,16 @@ namespace CarPool.Controllers
         /// Private Member of RidesController Class (Used for Dependency Injection)
         /// </summary>
         private readonly IRidesService _ridesService;
+        private readonly IAuthService _authService;
 
         /// <summary>
         /// Constructor of RidesController
         /// </summary>
         /// <param name="ridesService">Instence of IRidesService interface</param>
-        public RidesController(IRidesService ridesService)
+        public RidesController(IRidesService ridesService, IAuthService authService)
         {
             _ridesService = ridesService;
+            _authService = authService;
         }
 
 
@@ -34,13 +36,13 @@ namespace CarPool.Controllers
         /// <param name="startLocation">Start Location entered by user in frontend</param>
         /// <param name="destination">Destination entered by user in frontend</param>
         /// <returns>Returs response from the GetMatches method of RidesService</returns>
-        [HttpGet("GetRideMatches")]
+        [HttpGet("RideMatches")]
         [Authorize]
 
-        public IEnumerable<Ride> GetRideMatches(DateTime date, int time, string startLocation, string destination)
+        public async Task<IEnumerable<Ride>> RideMatches(DateTime date, int time, string startLocation, string destination)
         {
-            string userId= User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return _ridesService.GetMatches(userId,date, time, startLocation, destination).Result;
+            
+            return await _ridesService.MatchRides(_authService.GetUserIdByToken(),date, time, startLocation, destination);
         }
 
         /// <summary>
@@ -48,10 +50,10 @@ namespace CarPool.Controllers
         /// </summary>
         /// <param name="ride">User Input as instence of Rides class</param>
         /// <returns>Returns response from OfferRide method of RidesService</returns>
-        [HttpPost("PushRide")]
+        [HttpPost("OfferARide")]
         [Authorize]
 
-        public bool PushRides([FromBody] Ride ride)
+        public async Task<bool> OfferARide([FromBody] Ride ride)
         {
             try
             {
@@ -62,8 +64,8 @@ namespace CarPool.Controllers
                 else
                 {
                     ride.RideId="ride"+ DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                    ride.RideOfferedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                    return _ridesService.OfferRide(ride).Result;
+                    ride.RideOfferedBy = _authService.GetUserIdByToken();
+                    return await _ridesService.OfferRide(ride);
                     
                 }
             }
@@ -77,13 +79,12 @@ namespace CarPool.Controllers
         /// Controller to get userId from the token and pass it for processing to GetBookedRideHistory method of RidesService.
         /// </summary>
         /// <returns>Returns response from GetBookedRideHistory method of RidesService</returns>
-        [HttpGet("GetBookedHistory")]
+        [HttpGet("BookedHistory")]
         [Authorize]
 
-        public List<Ride> GetBookedHistory()
+        public async Task<List<Ride>> BookedHistory()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return _ridesService.GetBookedRideHistory(userId).Result;
+            return await _ridesService.BookedRideHistory(_authService.GetUserIdByToken());
         }
 
         /// <summary>
@@ -91,13 +92,12 @@ namespace CarPool.Controllers
         /// </summary>
         /// <returns>Returns response from GetOfferedRideHistory method of RidesService</returns>
 
-        [HttpGet("GetOfferedHistory")]
+        [HttpGet("OfferedHistory")]
         [Authorize]
 
-        public List<Ride> GetOfferedHistory()
+        public async Task<List<Ride>> OfferedHistory()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return _ridesService.GetOfferedRideHistory(userId).Result;
+            return await _ridesService.OfferedRideHistory(_authService.GetUserIdByToken());
         }
 
         /// <summary>
@@ -109,18 +109,18 @@ namespace CarPool.Controllers
         [HttpPost("Booking")]
         [Authorize]
 
-        public bool Booking(int seats , string rideId)
+        public async Task<bool> Booking(int seats , string rideId)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (userId != null && seats != 0 && rideId != null)
+            if (_authService.GetUserIdByToken() != null && seats != 0 && rideId != null)
             {
-                return _ridesService.Booking(userId, seats, rideId).Result;
+                return await _ridesService.BookingRide(_authService.GetUserIdByToken(), seats, rideId);
             }
             else
             {
                 return false;
             }
         }
+
     }
 }

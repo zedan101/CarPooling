@@ -1,5 +1,6 @@
 using CarPool.Services;
 using CarPool.Services.Interfaces;
+using CarPool.Services.Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -21,7 +22,9 @@ namespace CarPool
             // Add services to the container.
             builder.Services.AddScoped<IUsersService, UsersService>();
             builder.Services.AddScoped<IRidesService, RidesService>();
-            builder.Services.AddScoped<IMapperConfig, MapperConfig>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             builder.Services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -34,9 +37,9 @@ namespace CarPool
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = "https://localhost:7107",
-                        ValidAudience = "https://localhost:7107",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
+                        ValidIssuer = StaticData.Issuer,
+                        ValidAudience = StaticData.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(StaticData.key))
                      };
                 });
 
@@ -47,8 +50,11 @@ namespace CarPool
 
             builder.Services.AddDbContext<CarPoolContext>(opts => opts.UseSqlServer(connectionString));
 
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+
             builder.Services.AddControllers().AddNewtonsoftJson();
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddSwaggerGen(c =>
             {
@@ -86,6 +92,7 @@ namespace CarPool
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

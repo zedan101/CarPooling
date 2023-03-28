@@ -4,11 +4,11 @@ namespace CarPool.Services.Interfaces
 {
     public interface IRidesService
     {
-        public Task<List<Ride>> GetMatches(string userId,DateTime date, int time, string startLocation, string destination);
+        public Task<List<Ride>> MatchRides(string userId,DateTime date, int time, string startLocation, string destination);
         public Task<bool> OfferRide(Ride ride);
-        public Task<List<Ride>> GetBookedRideHistory(string userId);
-        public Task<List<Ride>> GetOfferedRideHistory(string userId);
-        public Task<bool> Booking(string userId,int seats,string rideId);
+        public Task<List<Ride>> BookedRideHistory(string userId);
+        public Task<List<Ride>> OfferedRideHistory(string userId);
+        public Task<bool> BookingRide(string userId,int seats,string rideId);
 
     }
 }
