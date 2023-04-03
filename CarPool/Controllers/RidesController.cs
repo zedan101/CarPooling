@@ -23,7 +23,7 @@ namespace CarPool.Controllers
         /// Constructor of RidesController
         /// </summary>
         /// <param name="ridesService">Instence of IRidesService interface</param>
-        public RidesController(IRidesService ridesService,IMapper mapper, IUsersService userService) { 
+        public RidesController(IRidesService ridesService, IMapper mapper, IUsersService userService) {
             _ridesService = ridesService;
             _mapper = mapper;
             _userService = userService;
@@ -40,8 +40,15 @@ namespace CarPool.Controllers
         /// <returns>Returs response from the GetMatches method of RidesService</returns>
         [HttpGet("RideMatches")]
         [Authorize]
-        public async Task<IEnumerable<RideHistoryRes>> RideMatches(MatchRideReq matchReq)
+        public async Task<IEnumerable<RideHistoryRes>> RideMatches(DateTime Date, Enums.Time Time,string StartLocation,string Destination)
         {
+            var matchReq = new MatchRideReq()
+            {
+                Date = Date,
+                Time = Time,
+                StartLocation = StartLocation,
+                EndLocation = Destination
+            };
             var rides = await _ridesService.MatchRides(matchReq);
             List<RideHistoryRes> ridesRes = new ();
             int i = 0;
