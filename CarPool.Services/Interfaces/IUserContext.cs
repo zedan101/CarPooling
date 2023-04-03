@@ -11,6 +11,7 @@ namespace CarPool.Services.Interfaces
     public interface IUserContext
     {
         string UserId { get; }
-       // public string GetLoggedInUserId();
+
+        User LoggedInUser { get; }
     }
 }

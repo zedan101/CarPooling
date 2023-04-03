@@ -33,7 +33,7 @@ namespace CarPool.Services
             { 
                 IEnumerable<OfferedRide> res =(await _carPoolContext.OfferedRide.Include(or=>or.Locations)
                                             .Include(or=>or.BookedRides)
-                                            .Where(rides => rides.UserId!=_userContext.UserId && rides.Date == matchReq.Date && rides.Time == (int)matchReq.Time
+                                            .Where(rides => rides.UserId!= _userContext.UserId && rides.Date == matchReq.Date && rides.Time == (int)matchReq.Time
                                             && (rides.Locations.Any(loc => loc.Location == matchReq.StartLocation) && rides.Locations.Any(loc => loc.Location == matchReq.EndLocation)
                                             && rides.AvailableSeats > 0)).ToListAsync()).Where(rides => 
                                             rides.Locations.First(loc=>loc.Location == matchReq.StartLocation).SequenceNum < rides.Locations.First(loc => loc.Location == matchReq.EndLocation).SequenceNum).ToList();

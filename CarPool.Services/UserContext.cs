@@ -10,9 +10,11 @@ namespace CarPool.Services
     public class UserContext:IUserContext
     {
         private readonly IHttpContextAccessor _httpContextAccess;
-        public UserContext(IHttpContextAccessor httpContextAccess)
+        private readonly IUsersService _userService;
+        public UserContext(IHttpContextAccessor httpContextAccess, IUsersService userService)
         {
             _httpContextAccess = httpContextAccess;
+            _userService = userService;
         }
 
         public string UserId
@@ -20,6 +22,14 @@ namespace CarPool.Services
             get
             {
                 return _httpContextAccess.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            }
+        }
+
+        public User LoggedInUser 
+        {
+            get 
+            { 
+                return _userService.GetUserDetail(UserId).GetAwaiter().GetResult();
             }
         }
     }
