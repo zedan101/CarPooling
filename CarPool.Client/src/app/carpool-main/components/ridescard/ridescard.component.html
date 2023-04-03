@@ -1,7 +1,7 @@
 <section class="ride-card row p-3 form-box-shadow">
-<h2 *ngIf="usr!=null" class="col-9 m-0 text-truncate">{{usr.userName}}</h2>
-<img *ngIf="!isShowThumbnail" class="col-3 profile-image" src={{usr.profileImage}} (error)="isShowThumbnail=true">
-<div *ngIf="isShowThumbnail" class="col-3 profile-image rounded-circle background-yellow"><span class="d-flex justify-content-center mt-2 color-white fw-normal">{{usr.userName[0].toUpperCase()}}</span></div>
+<h2  class="col-9 m-0 text-truncate">{{ride.userName}}</h2>
+<img *ngIf="!isShowThumbnail" class="col-3 profile-image" src={{ride.profileImage}} (error)="isShowThumbnail=true">
+<div *ngIf="isShowThumbnail" class="col-3 profile-image rounded-circle background-yellow"><span class="d-flex justify-content-center mt-2 color-white fw-normal">{{ride.userName[0].toUpperCase()}}</span></div>
                 
 <div class="col-3">
     <label for="">From</label>
@@ -35,7 +35,7 @@
 </div>
 <div class="col-6">
     <label>Seats</label>
-    <p *ngIf="!isOffer" class="m-0">{{ride.numberOfSeatsAvailable}}</p>
-    <p *ngIf="isOffer" class="m-0">{{ride.rideTakenBy.length}}</p>
+    <p  class="m-0">{{ride.numberOfSeatsAvailable}}</p>
+    <!-- <p *ngIf="isOffer" class="m-0">{{ride.numberOfSeatsAvailable}}</p> -->
 </div>
 </section>

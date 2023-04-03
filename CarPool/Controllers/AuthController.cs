@@ -1,7 +1,7 @@
-﻿using Carpool.DataLayer;
-using CarPool.Model;
-using CarPool.Models;
+﻿using CarPool.Model;
+using CarPool.Services;
 using CarPool.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,7 +25,7 @@ namespace CarPool.Controllers
         /// <summary>
         /// Constructor of AuthController Class
         /// </summary>
-        /// <param name="usersService">Instence of IUSerService interface</param>
+        /// <param name="usersService">Instence of IAuthService interface</param>
         public AuthController(IAuthService authService)
         {
             _authService = authService;
@@ -47,11 +47,11 @@ namespace CarPool.Controllers
                 {
                     new Claim(ClaimTypes.NameIdentifier,(await _authService.GetClaimDataForUserIdentification(userEmail)).UserId)
                 };
-                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(StaticData.key));
+                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.key));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
                 var tokeOptions = new JwtSecurityToken(
-                    issuer: StaticData.Issuer,
-                    audience: StaticData.Audience,
+                    issuer: Configuration.Issuer,
+                    audience: Configuration.Audience,
                     claims: claims,
                     expires: DateTime.Now.AddMinutes(60),
                     signingCredentials: signinCredentials
@@ -62,6 +62,26 @@ namespace CarPool.Controllers
             else
             {
                 return new AuthenticatedResponse { Token = null };
+            }
+        }
+
+
+        /// <summary>
+        /// Controller to return response from ChangePassword method of Users Service.
+        /// </summary>
+        /// <param name="newPass">New Password value</param>
+        /// <returns>returns response as bool</returns>
+        [HttpPatch("ChangePassword")]
+        [Authorize]
+        public async Task<bool> ChangePassword(string newPass)
+        {
+            if (newPass != null)
+            {
+                return await _authService.ChangePassword( newPass);
+            }
+            else
+            {
+                return false;
             }
         }
     }

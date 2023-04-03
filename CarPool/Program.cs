@@ -23,6 +23,7 @@ namespace CarPool
             builder.Services.AddScoped<IUsersService, UsersService>();
             builder.Services.AddScoped<IRidesService, RidesService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IUserContext, UserContext>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             builder.Services.AddAuthentication(opt => {
@@ -37,9 +38,9 @@ namespace CarPool
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = StaticData.Issuer,
-                        ValidAudience = StaticData.Audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(StaticData.key))
+                        ValidIssuer = Configuration.Issuer,
+                        ValidAudience = Configuration.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.key))
                      };
                 });
 
@@ -58,16 +59,17 @@ namespace CarPool
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new() { Title = "Carpool", Version = "v1" });
-                c.CustomSchemaIds(x => x.FullName);
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                c.SwaggerDoc(Configuration.swaggerDocVersion, new() { Title = Configuration.swaggerDocTitle, Version = Configuration.swaggerDocVersion });
+                //c.CustomSchemaIds(x => x.FullName);
+                c.CustomSchemaIds(s => s.FullName?.Replace("+", "."));
+                c.AddSecurityDefinition(Configuration.swaggerAuthSchema, new OpenApiSecurityScheme
                 {
-                    Name = "Authorization",
+                    Name = Configuration.swaggerAuthName,
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
+                    Scheme = Configuration.swaggerAuthSchema,
+                    BearerFormat = Configuration.swaggerBearerFormate,
                     In = ParameterLocation.Header,
-                    Description = "JWT Authorization header using the Bearer scheme."
+                    Description = Configuration.swaggerAuthDescription,
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement()
     {
@@ -77,10 +79,10 @@ namespace CarPool
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id ="Bearer"
+                    Id =Configuration.swaggerAuthName
                 },
-                Scheme = "oauth2",
-                Name = "Bearer",
+                Scheme = Configuration.swaggerAuthSchema,
+                Name = Configuration.swaggerAuthName,
                 In = ParameterLocation.Header,
             },
             new List<string>()

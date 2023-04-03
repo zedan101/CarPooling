@@ -12,12 +12,12 @@ namespace CarPool.Services
     public class AuthService : IAuthService
     {
 
-        private readonly IHttpContextAccessor _httpContextAccess;
+        private readonly IUserContext _userContext;
         private readonly CarPoolContext _carPoolContext;
-        public AuthService(CarPoolContext carPoolContext, IHttpContextAccessor httpContextAccess)
+        public AuthService(CarPoolContext carPoolContext, IUserContext userContext)
         {
             _carPoolContext = carPoolContext;
-            _httpContextAccess = httpContextAccess;
+            _userContext = userContext;
         }
 
 
@@ -39,10 +39,17 @@ namespace CarPool.Services
                 
         }
 
-        public string GetUserIdByToken()
+        /// <summary>
+        /// Method to Change password of the user.
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <param name="newPass">new password</param>
+        /// <returns>returns success or fail reponse as bool value</returns>
+        public async Task<bool> ChangePassword( string newPass)
         {
-            string userId = _httpContextAccess.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return userId;
+            (await _carPoolContext.User.FirstAsync(user => user.UserId == _userContext.UserId)).Password = newPass;
+            var res = await _carPoolContext.SaveChangesAsync();
+            return res > 0;
         }
     }
 }

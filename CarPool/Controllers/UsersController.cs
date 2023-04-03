@@ -14,16 +14,14 @@ namespace CarPool.Controllers
         /// Private Member of UsersController Class (Used for Dependency Injection)
         /// </summary>
         private readonly IUsersService _usersService;
-        private readonly IAuthService _authService;
 
         /// <summary>
         /// Constructor of UsersController. 
         /// </summary>
         /// <param name="usersService">Instence of IUsersService interface</param>
-        public UsersController(IUsersService usersService, IAuthService authService)
+        public UsersController(IUsersService usersService)
         {
             _usersService = usersService;
-            _authService = authService;
         }
 
         /// <summary>
@@ -35,7 +33,7 @@ namespace CarPool.Controllers
 
         public async Task<User> LoggedUserDetails()
         {
-            return await _usersService.GetUserDetail(_authService.GetUserIdByToken());
+            return await _usersService.GetUserDetail(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         }
 
         /// <summary>
@@ -51,25 +49,6 @@ namespace CarPool.Controllers
         }
 
 
-        /// <summary>
-        /// Controller to return response from ChangePassword method of Users Service.
-        /// </summary>
-        /// <param name="newPass">New Password value</param>
-        /// <returns>returns response as bool</returns>
-        [HttpPatch("ChangePassword")]
-        [Authorize]
-        public async Task<bool> ChangePassword(string newPass)
-        {
-            if(newPass!=null)
-            {
-                var res = await _usersService.ChangePassword(_authService.GetUserIdByToken(), newPass);
-                return res>0;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
         /// <summary>
         /// Controller to return response from UpdateProfile method of Users Service.
@@ -81,7 +60,8 @@ namespace CarPool.Controllers
         [Authorize]
         public async Task<bool> UpdateProfile([FromBody]User user)
         {
-            return await _usersService.UpdateUserProfile(_authService.GetUserIdByToken(), user.UserName, user.ProfileImage);
+           
+            return await _usersService.UpdateUserProfile( user.UserName, user.ProfileImage);
         }
 
         /// <summary>
@@ -90,10 +70,10 @@ namespace CarPool.Controllers
         /// <returns>returns response as bool</returns>
         [HttpDelete("DeleteProfile")]
         [Authorize]
-        public async Task<bool> DeleteUserAccount()
+        public async Task<bool> RemoveUserAccount()
         {
-             var res = await _usersService.DeleteUser(_authService.GetUserIdByToken());
-            return res>0;
+            
+            return await _usersService.DeleteUser();
         } 
         /// <summary>
         /// Controller Checks the data sent from client for null and passes it to PostUserDetails method of Users Service.
@@ -102,7 +82,7 @@ namespace CarPool.Controllers
         /// <returns>Returns the response from PostUserDetails method of Users Service</returns>
         [HttpPost("PostUser")]
 
-        public async Task<bool> UserSignUp([FromBody] User users)
+        public async Task<bool> SignUp([FromBody] User users)
         {
             try
             {
@@ -112,8 +92,7 @@ namespace CarPool.Controllers
                 }
                 else
                 {
-                    var res = await _usersService.SubmitUserDetails(users);
-                    return res>0;
+                    return await _usersService.SubmitUserDetails(users);
                 }
             }
             catch (Exception)
@@ -149,6 +128,8 @@ namespace CarPool.Controllers
                 return false;
             }
         }
+
+       
 
     }
 }

@@ -12,10 +12,12 @@ namespace CarPool.Services
 
         private readonly CarPoolContext _carPoolContext;
         private readonly IMapper _mapper;
-        public UsersService(CarPoolContext carPoolContext, IMapper mapper)
+        private readonly IUserContext _userContext;
+        public UsersService(CarPoolContext carPoolContext, IMapper mapper , IUserContext userContext)
         {
             _carPoolContext = carPoolContext;
             _mapper = mapper;
+            _userContext = userContext;
         }
         /// <summary>
         /// Method to get user details. 
@@ -33,26 +35,15 @@ namespace CarPool.Services
         /// </summary>
         /// <param name="users">User Details as instence of Users Class</param>
         /// <returns>Success or not response as bool</returns>
-        public async Task<int> SubmitUserDetails(User users)
+        public async Task<bool> SubmitUserDetails(User users)
         {
             UserEntity user = _mapper.Map<UserEntity>(users);
-            _carPoolContext.User.Add(user);
+            await _carPoolContext.User.AddAsync(user);
             var res = await _carPoolContext.SaveChangesAsync();
-            return res;
+            return res>0;
         }
 
-        /// <summary>
-        /// Method to Change password of the user.
-        /// </summary>
-        /// <param name="userId">user id</param>
-        /// <param name="newPass">new password</param>
-        /// <returns>returns success or fail reponse as bool value</returns>
-        public async Task<int> ChangePassword(string userId,string newPass)
-        {
-            _carPoolContext.User.First(user=> user.UserId== userId).Password = newPass;
-            var res = await _carPoolContext.SaveChangesAsync();
-            return res;
-        }
+       
 
         /// <summary>
         /// Method to update profile information of the user. 
@@ -61,31 +52,13 @@ namespace CarPool.Services
         /// <param name="userName">New user name</param>
         /// <param name="profile">new profile image</param>
         /// <returns></returns>
-        public async Task<bool> UpdateUserProfile(string userId , string? userName, string? profile)
+        public async Task<bool> UpdateUserProfile( string userName, string profile)
         {
-            if (userName!=null || profile!=null)
-            {
-                _carPoolContext.User.First(user=>user.UserId == userId).ProfileImage = profile;
-                _carPoolContext.User.First(user => user.UserId == userId).Name = userName;
-                await _carPoolContext.SaveChangesAsync();
-                return true;
-            }
-            else if (userName != null)
-            {
-                _carPoolContext.User.First(user=> user.UserId== userId).Name = userName;
-                await _carPoolContext.SaveChangesAsync();
-                return true; 
-            }
-            else if (profile != null)
-            {
-                _carPoolContext.User.First(user => user.UserId == userId).ProfileImage = profile;
-                await _carPoolContext.SaveChangesAsync(); 
-                return true;
-            }
-            else
-            {
-                return false; 
-            }
+                (await _carPoolContext.User.FirstAsync(user=>user.UserId == _userContext.UserId)).ProfileImage = profile;
+                (await _carPoolContext.User.FirstAsync(user => user.UserId == _userContext.UserId)).Name = userName;
+                var res = await _carPoolContext.SaveChangesAsync();
+                return res > 0;
+            
         }
 
         /// <summary>
@@ -93,14 +66,12 @@ namespace CarPool.Services
         /// </summary>
         /// <param name="userId">Id of user</param>
         /// <returns>response success or fail as bool value</returns>
-        public async Task<int> DeleteUser(string userId)
+        public async Task<bool> DeleteUser()
         {
-                var usr =await _carPoolContext.User.FirstAsync(user => user.UserId == userId);
+                var usr =await _carPoolContext.User.FirstAsync(user => user.UserId == _userContext.UserId);
                 _carPoolContext.User.Remove(usr);
                 var res = await _carPoolContext.SaveChangesAsync();
-                return res;
-                
-             
+                return res>0;  
         }
 
 

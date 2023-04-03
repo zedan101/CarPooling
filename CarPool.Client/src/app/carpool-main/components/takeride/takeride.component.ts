@@ -7,6 +7,7 @@ import { isEmpty, lastValueFrom, Observable, of } from 'rxjs';
 import {timeLabel}  from 'src/assets/static-data/static-data';
 import { Route, Router } from '@angular/router';
 import { ToastService } from 'src/app/common/services/toast.service';
+import { RideResponse } from '../../model/ride-response.model';
 
 @Component({
   selector: 'app-takeride',
@@ -16,7 +17,7 @@ import { ToastService } from 'src/app/common/services/toast.service';
 export class TakeRideComponent implements OnInit {
   
   inputData!:BookRideReq; 
-  rides!: Ride[];
+  rides!: RideResponse[];
   timeSelectedIdx?:number;
   isDropdown=false;
   labels = timeLabel;
@@ -61,7 +62,7 @@ export class TakeRideComponent implements OnInit {
     }
   }
 
-  async booking(ride:Ride){
+  async booking(ride:RideResponse){
     var res =await lastValueFrom(this.rideService.booking(1,ride.rideId));
     this.takeRideForm.reset();
     this.timeSelectedIdx=undefined;

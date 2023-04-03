@@ -13,10 +13,12 @@ namespace CarPool.Services
 
         private readonly CarPoolContext _carPoolContext;
         private readonly IMapper _mapper;
-        public RidesService(CarPoolContext carPoolContext, IMapper mapper)
+        private readonly IUserContext _userContext;
+        public RidesService(CarPoolContext carPoolContext, IMapper mapper, IUserContext userContext)
         {
             _carPoolContext = carPoolContext;
             _mapper = mapper;
+            _userContext = userContext;
         }
 
         /// <summary>
@@ -27,17 +29,16 @@ namespace CarPool.Services
         /// <param name="startLocation">Start point of the ride</param>
         /// <param name="destination">Destination</param>
         /// <returns>Returs list of rides matching the conditions</returns>
-        public async Task<List<Ride>> MatchRides(string userId,DateTime date, int time, string startLocation, string destination)
+        public async Task<IEnumerable<Ride>> MatchRides(MatchRideReq matchReq)
             { 
-                var matches = new List<Ride>();
-                List<OfferedRide> res =(await _carPoolContext.OfferedRide.Include(or=>or.Locations)
+                IEnumerable<OfferedRide> res =(await _carPoolContext.OfferedRide.Include(or=>or.Locations)
                                             .Include(or=>or.BookedRides)
-                                            .Where(rides => rides.UserId!=userId && rides.Date == date && rides.Time == time
-                                            && (rides.Locations.Any(loc => loc.Location == startLocation) && rides.Locations.Any(loc => loc.Location == destination)
+                                            .Where(rides => rides.UserId!=_userContext.UserId && rides.Date == matchReq.Date && rides.Time == (int)matchReq.Time
+                                            && (rides.Locations.Any(loc => loc.Location == matchReq.StartLocation) && rides.Locations.Any(loc => loc.Location == matchReq.EndLocation)
                                             && rides.AvailableSeats > 0)).ToListAsync()).Where(rides => 
-                                            rides.Locations.First(loc=>loc.Location == startLocation).SequenceNum < rides.Locations.First(loc => loc.Location == destination).SequenceNum).ToList();
+                                            rides.Locations.First(loc=>loc.Location == matchReq.StartLocation).SequenceNum < rides.Locations.First(loc => loc.Location == matchReq.EndLocation).SequenceNum).ToList();
                 
-                matches = _mapper.Map<List<Ride>>(res);
+                var matches = _mapper.Map<IEnumerable<Ride>>(res);
             
                 return matches;
             }
@@ -77,13 +78,12 @@ namespace CarPool.Services
         /// </summary>
         /// <param name="userId">Id of user</param>
         /// <returns>List of Rides that matches the querry</returns>
-            public async Task<List<Ride>>BookedRideHistory(string userId)
+            public async Task<IEnumerable<Ride>>BookedRideHistory()
             {
-                var matches = new List<Ride>();
-                List<OfferedRide> res =await _carPoolContext.OfferedRide.Include(or => or.Locations)
+                IEnumerable<OfferedRide> res =await _carPoolContext.OfferedRide.Include(or => or.Locations)
                                         .Include(or => or.BookedRides)
-                                        .Where(rides => rides.BookedRides.Any(br=> br.UserId == userId)).ToListAsync();
-                matches = _mapper.Map<List<Ride>>(res);
+                                        .Where(rides => rides.BookedRides.Any(br=> br.UserId == _userContext.UserId)).ToListAsync();
+                var matches = _mapper.Map<IEnumerable<Ride>>(res);
                 return matches;
             }
 
@@ -93,13 +93,12 @@ namespace CarPool.Services
             /// <param name="userId">Id of user</param>
             /// <returns> List of rides that matches the querry</returns>
             
-            public async Task<List<Ride>> OfferedRideHistory(string userId)
+            public async Task<IEnumerable<Ride>> OfferedRideHistory()
             {
-                var matches = new List<Ride>();
-                List<OfferedRide> res = await _carPoolContext.OfferedRide.Include(or => or.Locations)
+                IEnumerable<OfferedRide> res = await _carPoolContext.OfferedRide.Include(or => or.Locations)
                                                 .Include(or => or.BookedRides)
-                                                .Where(rides => rides.UserId==userId).ToListAsync();
-                matches = _mapper.Map<List<Ride>> (res);   
+                                                .Where(rides => rides.UserId==_userContext.UserId).ToListAsync();
+                var matches = _mapper.Map<IEnumerable<Ride>>(res);   
                 return matches;
             }
 
@@ -111,7 +110,7 @@ namespace CarPool.Services
         /// <param name="seats">No of seats being booked</param>
         /// <param name="rideId">Id of the ride being booked</param>
         /// <returns>Success or not response as bool</returns>
-            public async Task<bool> BookingRide(string userId , int seats , string rideId)
+            public async Task<bool> BookingRide( int seats , string rideId)
             {
                     OfferedRide match;
                     match =_carPoolContext.OfferedRide.FirstOrDefault(ride=> ride.RideId== rideId);
@@ -119,7 +118,7 @@ namespace CarPool.Services
                     {
                         match.BookedRides.Add(new()
                         {
-                            UserId=userId,
+                            UserId=_userContext.UserId,
                             RideId=rideId,
                         });
                         match.AvailableSeats= match.AvailableSeats-1;

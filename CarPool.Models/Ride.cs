@@ -27,7 +27,7 @@ namespace CarPool.Models
         /// <summary>
         /// Time of the ride.
         /// </summary>
-        public int Time { get; set; }
+        public Enums.Time Time { get; set; }
 
         /// <summary>
         /// Number of seats available.

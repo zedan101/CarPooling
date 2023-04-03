@@ -4,6 +4,7 @@ import { Endpoints } from '../../endpoints';
 import { Ride } from '../model/ride.model';
 import { BookRideReq } from '../model/book-ride-req.model';
 import { Observable } from 'rxjs';
+import { RideResponse } from '../model/ride-response.model';
 
 
 @Injectable({
@@ -16,20 +17,20 @@ export class RidesService {
         'Content-Type': 'application/json'
       });
 
-    getRides(ride:BookRideReq) : Observable<Ride[]>{
-        return this.httpService.get<Ride[]>(Endpoints.Rides.getRides(ride.date,ride.time,ride.from,ride.to));
+    getRides(ride:BookRideReq) : Observable<RideResponse[]>{
+        return this.httpService.get<RideResponse[]>(Endpoints.Rides.getRides(ride.date,ride.time,ride.from,ride.to));
     }
 
     offerRide(ride : Ride){
         return this.httpService.post<boolean>(Endpoints.Rides.pushRide(),ride,{headers: this.headers});
     }
 
-    getBookedHistory() : Observable<Ride[]>{
-        return this.httpService.get<Ride[]>(Endpoints.Rides.getBookedHistory());
+    getBookedHistory(){
+        return this.httpService.get<RideResponse[]>(Endpoints.Rides.getBookedHistory());
     }
     
-    getOOfferedHistory() : Observable<Ride[]>{
-        return this.httpService.get<Ride[]>(Endpoints.Rides.getOfferedHistory());
+    getOOfferedHistory(){
+        return this.httpService.get<RideResponse[]>(Endpoints.Rides.getOfferedHistory());
     }
 
     booking(seats:number,rideId:string){

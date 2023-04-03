@@ -4,6 +4,7 @@ import { Ride } from 'src/app/carpool-main/model/ride.model';
 import { User } from 'src/app/carpool-main/model/user.model';
 import { UsersService } from 'src/app/carpool-main/services/users.service';
 import { timeLabel } from 'src/assets/static-data/static-data';
+import { RideResponse } from '../../model/ride-response.model';
 
 @Component({
   selector: 'app-ridescard',
@@ -11,22 +12,22 @@ import { timeLabel } from 'src/assets/static-data/static-data';
   styleUrls: ['./ridescard.component.css']
 })
 export class RidesCardComponent implements OnInit {
-  @Input() ride!: Ride;
-  @Input() isOffer!:boolean;
+  @Input() ride!: RideResponse;
+  // @Input() isOffer!:boolean;
   @Input() start!:string;
   @Input() end!:string;
-  usr!:User;
+  // usr!:User;
   labels = timeLabel;
   isShowThumbnail=false;
   constructor(private userService:UsersService) { }
 
   async ngOnInit(){
-    if(this.isOffer){
-      this.usr = await lastValueFrom(this.userService.getUsers(this.ride.rideOfferedBy))  ;
-    }
-    else{
-      this.usr=await lastValueFrom(this.userService.getUsers(this.ride.rideOfferedBy))
-    }
+    // if(this.isOffer){
+    //   this.usr = await lastValueFrom(this.userService.getUsers(this.ride.rideOfferedBy))  ;
+    // }
+    // else{
+    //   this.usr=await lastValueFrom(this.userService.getUsers(this.ride.rideOfferedBy))
+    // }
   }
 
 }

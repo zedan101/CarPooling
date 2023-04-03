@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { Ride } from 'src/app/carpool-main/model/ride.model';
 import { RidesService } from 'src/app/carpool-main/services/rides.service';
+import { RideResponse } from '../../model/ride-response.model';
 
 @Component({
   selector: 'app-my-rides',
@@ -10,25 +11,15 @@ import { RidesService } from 'src/app/carpool-main/services/rides.service';
 })
 export class MyRidesComponent implements OnInit {
 
-  bookedRides:Array<Ride>=[];
-  offeredRides:Array<Ride>=[];
-  tempRide:Ride=new Ride();
-  bookRides:Array<Ride>=[];
+  bookedRides:Array<RideResponse>=[];
+  offeredRides:Array<RideResponse>=[];
+  tempRide:RideResponse=new RideResponse();
+  bookRides:Array<RideResponse>=[];
   constructor(private rideService:RidesService) { }
 
-  ngOnInit(){
-    
-    this.rideService.getBookedHistory().subscribe(data =>{
-      data.forEach(obj=> obj.rideTakenBy.forEach(element => {
-        this.tempRide = obj;
-        this.tempRide.rideTakenBy.forEach(e => e=element);
-        this.bookedRides.push(this.tempRide);
-      }));
-    }
-    );
-    this.rideService.getOOfferedHistory().subscribe(data=>{
-      data.forEach(obj=> this.offeredRides.push(obj));
-    });
+  async ngOnInit(){
+    this.bookedRides = await lastValueFrom(this.rideService.getBookedHistory());
+    this.offeredRides =await lastValueFrom(this.rideService.getOOfferedHistory());
   }
 
 }
