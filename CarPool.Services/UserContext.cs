@@ -3,6 +3,7 @@ using Carpool.DataLayer;
 using CarPool.Models;
 using CarPool.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace CarPool.Services
@@ -10,11 +11,13 @@ namespace CarPool.Services
     public class UserContext:IUserContext
     {
         private readonly IHttpContextAccessor _httpContextAccess;
-        private readonly IUsersService _userService;
-        public UserContext(IHttpContextAccessor httpContextAccess, IUsersService userService)
+        private readonly CarPoolContext _carPoolContext;
+        private readonly IMapper _mapper;
+        public UserContext(IHttpContextAccessor httpContextAccess, CarPoolContext carPoolContext, IMapper mapper)
         {
             _httpContextAccess = httpContextAccess;
-            _userService = userService;
+            _carPoolContext = carPoolContext;
+            _mapper = mapper;
         }
 
         public string UserId
@@ -28,8 +31,9 @@ namespace CarPool.Services
         public User LoggedInUser 
         {
             get 
-            { 
-                return _userService.GetUserDetail(UserId).GetAwaiter().GetResult();
+            {
+                return _mapper.Map<User>(_carPoolContext.User.First(user => user.UserId == UserId));
+                 
             }
         }
     }

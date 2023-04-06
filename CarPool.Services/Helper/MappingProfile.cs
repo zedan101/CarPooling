@@ -27,18 +27,18 @@ namespace CarPool.Services.Helper
             CreateMap<User, UserEntity>()
                 .ForMember(dest => dest.Name, act => act.MapFrom(src => src.UserName));
 
-            CreateMap<Ride, RideHistoryRes>()
-                .ForMember(dest => dest.UserName, act => act.Ignore())
-                .ForMember(dest => dest.ProfileImage, act => act.Ignore());
+            CreateMap<(Ride,User), RideHistoryRes>()
+                .ForMember(dest => dest.UserName, act => act.MapFrom(src=> src.Item2.UserName))
+                .ForMember(dest => dest.ProfileImage, act => act.MapFrom(src => src.Item2.ProfileImage))
+                .ForMember(dest => dest.Time, act => act.MapFrom(src => src.Item1.Time))
+                .ForMember(dest => dest.RideId, act => act.MapFrom(src => src.Item1.RideId))
+                .ForMember(dest => dest.RideOfferedBy, act => act.MapFrom(src => src.Item1.RideOfferedBy))
+                .ForMember(dest => dest.Date, act => act.MapFrom(src => src.Item1.Date))
+                .ForMember(dest => dest.NumberOfSeatsAvailable, act => act.MapFrom(src => src.Item1.NumberOfSeatsAvailable))
+                .ForMember(dest => dest.Price, act => act.MapFrom(src => src.Item1.Price))
+                .ForMember(dest => dest.Location, act => act.MapFrom(src => src.Item1.Location));
 
-            /*CreateMap<User, RideHistoryRes>()
-                .ForMember(dest=>dest.Time,act=> act.Ignore())
-                .ForMember(dest => dest.RideId, act => act.Ignore())
-                .ForMember(dest => dest.RideOfferedBy, act => act.Ignore())
-                .ForMember(dest => dest.Date, act => act.Ignore())
-                .ForMember(dest => dest.NumberOfSeatsAvailable, act => act.Ignore())
-                .ForMember(dest => dest.Price, act => act.Ignore())
-                .ForMember(dest => dest.Location, act => act.Ignore());*/
+
         }
     }
 }

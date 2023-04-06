@@ -55,11 +55,8 @@ namespace CarPool.Controllers
             foreach (var ride in rides)
             {
                 ridesRes.Add(new());
-                ridesRes[i] = _mapper.Map<RideHistoryRes>(ride);
                 var user = await _userService.GetUserDetail(ride.RideOfferedBy);
-                ridesRes[i].ProfileImage = user.ProfileImage;
-                ridesRes[i].UserName = user.UserName;
-                //ridesRes[i] = _mapper.Map<RideHistoryRes>((await _userService.GetUserDetail(ride.RideOfferedBy)));
+                ridesRes[i] = _mapper.Map<RideHistoryRes>((ride, user));
                 i++;
             }
             return ridesRes;
@@ -108,11 +105,8 @@ namespace CarPool.Controllers
             foreach (var ride in rides)
             {
                 ridesRes.Add(new());
-                ridesRes[i] = _mapper.Map<RideHistoryRes>(ride);
                 var user = await _userService.GetUserDetail(ride.RideOfferedBy);
-                ridesRes[i].ProfileImage = user.ProfileImage;
-                ridesRes[i].UserName= user.UserName;
-               // ridesRes[i] = _mapper.Map<RideHistoryRes>((await _userService.GetUserDetail(ride.RideOfferedBy)));
+                ridesRes[i] = _mapper.Map<RideHistoryRes>((ride,user));
                 i++;
             }
             return ridesRes;
@@ -133,11 +127,8 @@ namespace CarPool.Controllers
             foreach (var ride in rides)
             {
                 ridesRes.Add(new());
-                ridesRes[i] = _mapper.Map<RideHistoryRes>(ride);
                 var user = await _userService.GetUserDetail(ride.RideOfferedBy);
-                ridesRes[i].ProfileImage = user.ProfileImage;
-                ridesRes[i].UserName = user.UserName;
-                //ridesRes[i] = _mapper.Map<RideHistoryRes>((await _userService.GetUserDetail(ride.RideOfferedBy)));
+                ridesRes[i] = _mapper.Map<RideHistoryRes>((ride, user));
                 i++;
             }
             return ridesRes;

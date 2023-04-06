@@ -54,9 +54,10 @@ namespace CarPool.Services
         /// <returns></returns>
         public async Task<bool> UpdateUserProfile( string userName, string profile)
         {
-                (await _carPoolContext.User.FirstAsync(user=>user.UserId == _userContext.UserId)).ProfileImage = profile;
-                (await _carPoolContext.User.FirstAsync(user => user.UserId == _userContext.UserId)).Name = userName;
-                var res = await _carPoolContext.SaveChangesAsync();
+            var x = await _carPoolContext.User.FirstAsync(user => user.UserId == _userContext.UserId);
+            x.Name= userName == x.Name ? x.Name : userName;
+            x.ProfileImage = profile == x.ProfileImage ? x.ProfileImage : profile;
+            var res = await _carPoolContext.SaveChangesAsync();
                 return res > 0;
             
         }
