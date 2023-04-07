@@ -5,7 +5,7 @@ import { OfferRideComponent } from './components/offerride/offerride.component';
 import { TakeRideComponent } from './components/takeride/takeride.component';
 import { MyRidesComponent } from './components/my-rides/my-rides.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { AuthGuardGuard } from '../common/components/auth-guard.guard';
+import { AuthGuard } from '../common/components/auth.guard';
 
 const routes: Routes = [
   
@@ -13,27 +13,27 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
-    canActivate:[AuthGuardGuard]
+    canActivate:[AuthGuard]
   },
   {
     path: 'offer-ride',
     component: OfferRideComponent,
-    canActivate:[AuthGuardGuard]
+    canActivate:[AuthGuard]
   },
   {
     path: 'take-ride',
     component: TakeRideComponent,
-    canActivate:[AuthGuardGuard]
+    canActivate:[AuthGuard]
   },
   {
     path: 'my-rides',
     component: MyRidesComponent,
-    canActivate:[AuthGuardGuard]
+    canActivate:[AuthGuard]
   },
  {
     path: 'my-profile',
     component: ProfileComponent,
-    canActivate:[AuthGuardGuard]
+    canActivate:[AuthGuard]
   },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
