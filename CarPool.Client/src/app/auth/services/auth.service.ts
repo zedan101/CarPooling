@@ -24,4 +24,8 @@ export class AuthService {
         this.logout();
       }
     }
+
+    isLoggedIn(){
+      return window.localStorage.getItem("access_token")?true:false;
+    }
 }
