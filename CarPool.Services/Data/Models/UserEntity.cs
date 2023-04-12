@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarPool.DataLayer.Models
+namespace CarPool.Services.Data.Models
 {
     public class UserEntity
     {

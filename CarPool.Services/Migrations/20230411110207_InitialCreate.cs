@@ -1,18 +1,31 @@
 ﻿using System;
-using CarPool.DataLayer;
 using Microsoft.EntityFrameworkCore.Migrations;
+
 #nullable disable
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace CarPool.DataLayer.Migrations
+namespace CarPool.Services.Migrations
 {
     /// <inheritdoc />
-    public partial class CarPoolDataLayerCarPoolContext : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    LocationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LocationName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.LocationId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
@@ -37,7 +50,8 @@ namespace CarPool.DataLayer.Migrations
                     Time = table.Column<int>(type: "int", nullable: false),
                     AvailableSeats = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,11 +71,26 @@ namespace CarPool.DataLayer.Migrations
                     SlNo = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    RideId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    RideId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StartLocationId = table.Column<int>(type: "int", nullable: false),
+                    EndLocationId = table.Column<int>(type: "int", nullable: false),
+                    BookedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BookedRide", x => x.SlNo);
+                    table.ForeignKey(
+                        name: "FK_BookedRide_Locations_EndLocationId",
+                        column: x => x.EndLocationId,
+                        principalTable: "Locations",
+                        principalColumn: "LocationId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BookedRide_Locations_StartLocationId",
+                        column: x => x.StartLocationId,
+                        principalTable: "Locations",
+                        principalColumn: "LocationId",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_BookedRide_OfferedRide_RideId",
                         column: x => x.RideId,
@@ -81,13 +110,19 @@ namespace CarPool.DataLayer.Migrations
                 {
                     SerialNo = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
                     SequenceNum = table.Column<int>(type: "int", nullable: false),
                     RideId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RideLocation", x => x.SerialNo);
+                    table.ForeignKey(
+                        name: "FK_RideLocation_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "LocationId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RideLocation_OfferedRide_RideId",
                         column: x => x.RideId,
@@ -97,38 +132,62 @@ namespace CarPool.DataLayer.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Locations",
+                columns: new[] { "LocationId", "LocationName" },
+                values: new object[,]
+                {
+                    { 1, "delhi" },
+                    { 2, "nagpur" },
+                    { 3, "mumbai" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "UserId", "Name", "Password", "ProfileImage", "UserEmail" },
-                values: new object[] { "gh1", "Nitish", "Nitish%%", "hkdhk", "nitish@132" });
+                values: new object[,]
+                {
+                    { "gh1", "Nitish", "Nitish%%", "hkdhk", "nitish132@gmail.com" },
+                    { "gh2", "Deepak", "Deepak%%", "hkdhk", "deepak@gamail.com" }
+                });
 
             migrationBuilder.InsertData(
                 table: "OfferedRide",
-                columns: new[] { "RideId", "AvailableSeats", "Date", "Price", "Time", "UserId" },
-                values: new object[] { "abc@123", 2, new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 100.0, 1, "gh1" });
+                columns: new[] { "RideId", "AvailableSeats", "CreatedOn", "Date", "Price", "Time", "UserId" },
+                values: new object[] { "abc@123", 2, new DateTime(2023, 4, 11, 16, 32, 7, 763, DateTimeKind.Local).AddTicks(7688), new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 100.0, 1, "gh1" });
 
             migrationBuilder.InsertData(
                 table: "BookedRide",
-                columns: new[] { "SlNo", "RideId", "UserId" },
+                columns: new[] { "SlNo", "BookedOn", "EndLocationId", "RideId", "StartLocationId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "abc@123", "gh1" },
-                    { 2, "abc@123", "gh1" }
+                    { 1, new DateTime(2023, 4, 11, 16, 32, 7, 763, DateTimeKind.Local).AddTicks(7715), 3, "abc@123", 2, "gh2" },
+                    { 2, new DateTime(2023, 4, 11, 16, 32, 7, 763, DateTimeKind.Local).AddTicks(7716), 3, "abc@123", 2, "gh2" }
                 });
 
             migrationBuilder.InsertData(
                 table: "RideLocation",
-                columns: new[] { "SerialNo", "Location", "RideId", "SequenceNum" },
+                columns: new[] { "SerialNo", "LocationId", "RideId", "SequenceNum" },
                 values: new object[,]
                 {
-                    { 1, "Delhi", "abc@123", 0 },
-                    { 2, "Mumbai", "abc@123", 1 },
-                    { 3, "Nagpur", "abc@123", 2 }
+                    { 1, 1, "abc@123", 0 },
+                    { 2, 2, "abc@123", 1 },
+                    { 3, 3, "abc@123", 2 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookedRide_EndLocationId",
+                table: "BookedRide",
+                column: "EndLocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookedRide_RideId",
                 table: "BookedRide",
                 column: "RideId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookedRide_StartLocationId",
+                table: "BookedRide",
+                column: "StartLocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookedRide_UserId",
@@ -139,6 +198,11 @@ namespace CarPool.DataLayer.Migrations
                 name: "IX_OfferedRide_UserId",
                 table: "OfferedRide",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RideLocation_LocationId",
+                table: "RideLocation",
+                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RideLocation_RideId",
@@ -154,6 +218,9 @@ namespace CarPool.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "RideLocation");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "OfferedRide");

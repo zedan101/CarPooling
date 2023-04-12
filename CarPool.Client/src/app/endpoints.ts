@@ -65,8 +65,8 @@ export class Endpoints{
           return `${environment.localhostRides}/OfferedHistory`;
         }
         
-        static booking(seat:number,rideId:string){
-          return `${environment.localhostRides}/Booking?seats=${seat}&rideId=${rideId}`;
+        static booking(seat:number,rideId:string,startLocation:string,endLocation:string){
+          return `${environment.localhostRides}/Booking?seats=${seat}&rideId=${rideId}&startLocation=${startLocation}&endLocation=${endLocation}`;
         }
     }
 }

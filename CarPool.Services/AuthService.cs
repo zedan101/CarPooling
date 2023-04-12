@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Carpool.DataLayer;
-using CarPool.DataLayer.Models;
+using Carpool.Services.Data;
+using CarPool.Services.Data.Models;
 using CarPool.Models;
 using CarPool.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -29,8 +29,8 @@ namespace CarPool.Services
         /// <returns>Valid or not response as bool</returns>
         public async Task<bool> ValidateUser(string userEmail, string password)
         {
-            var res = await _carPoolContext.User.FirstAsync(user => user.UserEmail == userEmail && user.Password == password);
-            return res != null;
+            var res = await _carPoolContext.User.AnyAsync(user => user.UserEmail == userEmail && user.Password == password);
+            return res;
         }
 
        public async Task<UserEntity> GetClaimDataForUserIdentification(string userEmail)

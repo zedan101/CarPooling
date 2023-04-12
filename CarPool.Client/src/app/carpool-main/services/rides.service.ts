@@ -33,7 +33,7 @@ export class RidesService {
         return this.httpService.get<RideResponse[]>(Endpoints.Rides.getOfferedHistory());
     }
 
-    booking(seats:number,rideId:string){
-        return this.httpService.post<boolean>(Endpoints.Rides.booking(seats,rideId),"");
+    booking(seats:number,rideId:string,startLocation:string,endLocation:string){
+        return this.httpService.post<boolean>(Endpoints.Rides.booking(seats,rideId,startLocation,endLocation),"");
     }
 }

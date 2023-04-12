@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CarPool.Models;
 using Microsoft.AspNetCore.Authorization;
-using Newtonsoft.Json;
 using CarPool.Services.Interfaces;
 using System.Security.Claims;
-using Microsoft.Extensions.FileSystemGlobbing;
 using AutoMapper;
 
 namespace CarPool.Controllers
@@ -40,7 +38,7 @@ namespace CarPool.Controllers
         /// <returns>Returs response from the GetMatches method of RidesService</returns>
         [HttpGet("RideMatches")]
         [Authorize]
-        public async Task<IEnumerable<RideHistoryRes>> RideMatches(DateTime Date, Enums.Time Time,string StartLocation,string Destination)
+        public async Task<IEnumerable<DisplayRideRes>> RideMatches(DateTime Date, Enums.Time Time,string StartLocation,string Destination)
         {
             var matchReq = new MatchRideReq()
             {
@@ -50,13 +48,13 @@ namespace CarPool.Controllers
                 EndLocation = Destination
             };
             var rides = await _ridesService.MatchRides(matchReq);
-            List<RideHistoryRes> ridesRes = new ();
+            List<DisplayRideRes> ridesRes = new ();
             int i = 0;
             foreach (var ride in rides)
             {
                 ridesRes.Add(new());
                 var user = await _userService.GetUserDetail(ride.RideOfferedBy);
-                ridesRes[i] = _mapper.Map<RideHistoryRes>((ride, user));
+                ridesRes[i] = _mapper.Map<DisplayRideRes>((ride, user));
                 i++;
             }
             return ridesRes;
@@ -97,16 +95,19 @@ namespace CarPool.Controllers
         /// <returns>Returns response from GetBookedRideHistory method of RidesService</returns>
         [HttpGet("BookedHistory")]
         [Authorize]
-        public async Task<IEnumerable<RideHistoryRes>> BookedHistory()
+        public async Task<IEnumerable<DisplayRideRes>> BookedHistory()
         {
             var rides = await _ridesService.BookedRideHistory();
-            List<RideHistoryRes> ridesRes = new();
+            List<DisplayRideRes> ridesRes = new();
             int i = 0;
             foreach (var ride in rides)
             {
                 ridesRes.Add(new());
                 var user = await _userService.GetUserDetail(ride.RideOfferedBy);
-                ridesRes[i] = _mapper.Map<RideHistoryRes>((ride,user));
+                var bookedRideInfo = await _ridesService.GetBookingInfo(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, ride.RideId);
+                ridesRes[i] = _mapper.Map<DisplayRideRes>((ride,user));
+                ridesRes[i].StartLocation = await _ridesService.GetLocationById(bookedRideInfo.StartLocationId);
+                ridesRes[i].EndLocation = await _ridesService.GetLocationById(bookedRideInfo.EndLocationId);
                 i++;
             }
             return ridesRes;
@@ -119,17 +120,17 @@ namespace CarPool.Controllers
 
         [HttpGet("OfferedHistory")]
         [Authorize]
-        public async Task<IEnumerable<RideHistoryRes>> OfferedHistory()
+        public async Task<IEnumerable<DisplayRideRes>> OfferedHistory()
         {
             var rides = (await _ridesService.OfferedRideHistory()).ToList();
-            List<RideHistoryRes> ridesRes = new List<RideHistoryRes>();
+            List<DisplayRideRes> ridesRes = new List<DisplayRideRes>();
             int i = 0;
             foreach (var ride in rides)
             {
-                ridesRes.Add(new());
-                var user = await _userService.GetUserDetail(ride.RideOfferedBy);
-                ridesRes[i] = _mapper.Map<RideHistoryRes>((ride, user));
-                i++;
+                    ridesRes.Add(new());
+                    var user = await _userService.GetUserDetail(ride.RideOfferedBy);
+                    ridesRes[i] = _mapper.Map<DisplayRideRes>((ride, user));
+                    i++;
             }
             return ridesRes;
         }
@@ -142,12 +143,12 @@ namespace CarPool.Controllers
         /// <returns>Returns the response from Booking method of RidesService</returns>
         [HttpPost("Booking")]
         [Authorize]
-        public async Task<bool> Booking(int seats , string rideId)
+        public async Task<bool> Booking(int seats , string rideId, string startLocation, string endLocation)
         {
 
             if (seats != 0 && rideId != null)
             {
-                return await _ridesService.BookingRide(seats, rideId);
+                return await _ridesService.BookingRide(seats, rideId, startLocation, endLocation);
             }
             else
             {

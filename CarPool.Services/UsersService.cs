@@ -1,7 +1,7 @@
 ﻿using CarPool.Models;
 using CarPool.Services.Interfaces;
-using Carpool.DataLayer;
-using CarPool.DataLayer.Models;
+using Carpool.Services.Data;
+using CarPool.Services.Data.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 

@@ -6,7 +6,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthComponent } from './auth.component';
-
+import { CommonFeaturesModule } from "../common/common-features.module";
 
 @NgModule({
   declarations: [EntryFormsComponent, AuthComponent],

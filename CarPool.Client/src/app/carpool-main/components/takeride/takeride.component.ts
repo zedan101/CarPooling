@@ -63,7 +63,7 @@ export class TakeRideComponent implements OnInit {
   }
 
   async booking(ride:RideResponse){
-    var res =await lastValueFrom(this.rideService.booking(1,ride.rideId));
+    var res =await lastValueFrom(this.rideService.booking(1,ride.rideId,this.inputData.from,this.inputData.to));
     this.takeRideForm.reset();
     this.timeSelectedIdx=undefined;
     this.rides=[];

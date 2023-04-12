@@ -4,10 +4,9 @@ using CarPool.Services.Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using System.Security.Claims;
 using System.Text;
-using Carpool.DataLayer;
+using Carpool.Services.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 

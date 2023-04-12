@@ -1,10 +1,11 @@
 ﻿
 using AutoMapper;
-using Carpool.DataLayer;
-using CarPool.DataLayer.Models;
+using Carpool.Services.Data;
+using CarPool.Services.Data.Models;
 using CarPool.Models;
 using CarPool.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace CarPool.Services
 {
@@ -34,9 +35,11 @@ namespace CarPool.Services
                 IEnumerable<OfferedRide> res =(await _carPoolContext.OfferedRide.Include(or=>or.Locations)
                                             .Include(or=>or.BookedRides)
                                             .Where(rides => rides.UserId!= _userContext.UserId && rides.Date == matchReq.Date && rides.Time == (int)matchReq.Time
-                                            && (rides.Locations.Any(loc => loc.Location == matchReq.StartLocation) && rides.Locations.Any(loc => loc.Location == matchReq.EndLocation)
+                                            && (rides.Locations.Any(loc => loc.LocationId == _carPoolContext.Locations.First(loc => loc.LocationName == matchReq.StartLocation).LocationId)
+                                            && rides.Locations.Any(loc => loc.LocationId == _carPoolContext.Locations.First(loc => loc.LocationName == matchReq.EndLocation).LocationId)
                                             && rides.AvailableSeats > 0)).ToListAsync()).Where(rides => 
-                                            rides.Locations.First(loc=>loc.Location == matchReq.StartLocation).SequenceNum < rides.Locations.First(loc => loc.Location == matchReq.EndLocation).SequenceNum).ToList();
+                                            rides.Locations.First(loc => loc.LocationId == _carPoolContext.Locations.First(loc => loc.LocationName == matchReq.StartLocation).LocationId).SequenceNum
+                                            < rides.Locations.First(loc => loc.LocationId == _carPoolContext.Locations.First(loc => loc.LocationName == matchReq.EndLocation).LocationId).SequenceNum).ToList();
                 
                 var matches = _mapper.Map<IEnumerable<Ride>>(res);
             
@@ -52,22 +55,38 @@ namespace CarPool.Services
             public async Task<bool> OfferRide(Ride ride)
             {
                 OfferedRide offeredRide = _mapper.Map<OfferedRide>(ride);
-
+                offeredRide.CreatedOn= DateTime.Now;
                 _carPoolContext.OfferedRide.Add(offeredRide);
                 await _carPoolContext.SaveChangesAsync();
                 int i = -1;
                 foreach (var loc in ride.Location)
                 {
                     ++i;
-                    _carPoolContext.RideLocation.Add(new()
+                    if (_carPoolContext.Locations.Any(l => l.LocationName == loc))
                     {
-                        Location = loc,
-                        SequenceNum = i,
-                        RideId = ride.RideId
+                        _carPoolContext.RideLocation.Add(new()
+                        {
+                            LocationId = _carPoolContext.Locations.First(l => l.LocationName == loc).LocationId,
+                            SequenceNum = i,
+                            RideId = ride.RideId
 
-                    });
+                        });
+                    }
+                    else
+                    {
+                        _carPoolContext.Locations.Add(new() { LocationName = loc, });
+                        await _carPoolContext.SaveChangesAsync();
+                        _carPoolContext.RideLocation.Add(new()
+                        {
+                            LocationId = _carPoolContext.Locations.First(l => l.LocationName == loc).LocationId,
+                            SequenceNum = i,
+                            RideId = ride.RideId
+
+                        });
+                    }     
                 }
                 var res = await _carPoolContext.SaveChangesAsync();
+
                 return res>0;
             }
 
@@ -110,21 +129,41 @@ namespace CarPool.Services
         /// <param name="seats">No of seats being booked</param>
         /// <param name="rideId">Id of the ride being booked</param>
         /// <returns>Success or not response as bool</returns>
-            public async Task<bool> BookingRide( int seats , string rideId)
+            public async Task<bool> BookingRide( int seats , string rideId,string startLocation,string endLocation)
             {
                     OfferedRide match;
                     match =_carPoolContext.OfferedRide.FirstOrDefault(ride=> ride.RideId== rideId);
+                    if(!_carPoolContext.Locations.Any(l => l.LocationName == startLocation))
+                    {
+                        _carPoolContext.Locations.Add(new() { LocationName = startLocation, });
+                    }
+                    else if(!_carPoolContext.Locations.Any(l => l.LocationName == endLocation))
+                    {
+                        _carPoolContext.Locations.Add(new() { LocationName = endLocation, });
+                    }
                     for(int i = 1; i <= seats; i++)
                     {
                         match.BookedRides.Add(new()
                         {
                             UserId=_userContext.UserId,
                             RideId=rideId,
+                            StartLocationId= _carPoolContext.Locations.First(l => l.LocationName == startLocation).LocationId,
+                            EndLocationId= _carPoolContext.Locations.First(l=> l.LocationName==endLocation).LocationId,
+                            BookedOn = DateTime.Now
                         });
-                        match.AvailableSeats= match.AvailableSeats-1;
+                        match.AvailableSeats--;
                     }
                     await _carPoolContext.SaveChangesAsync();
                     return true;
+            }
+
+            public async Task<BookedRide> GetBookingInfo(string userId,string rideId)
+            {
+                    return await _carPoolContext.BookedRide.FirstAsync(bkr => bkr.UserId == userId && bkr.RideId == rideId);
+            }
+            public async Task<string> GetLocationById(int locationId)
+            {
+                return (await _carPoolContext.Locations.FirstAsync(loc=>loc.LocationId== locationId)).LocationName;
             }
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarPool.DataLayer.Models
+namespace CarPool.Services.Data.Models
 {
     public class OfferedRide
     {
@@ -24,6 +24,8 @@ namespace CarPool.DataLayer.Models
         public virtual ICollection<RideLocation> Locations { get; set; }
 
         public virtual ICollection<BookedRide> BookedRides { get; set; }
+
+        public DateTime CreatedOn { get; set; }
 
     }
 }

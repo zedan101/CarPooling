@@ -4,7 +4,6 @@ import { ToastComponent } from './components/toast/toast.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
-
 @NgModule({
   declarations: [
     ToastComponent

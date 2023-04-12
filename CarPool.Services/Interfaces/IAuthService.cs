@@ -1,9 +1,5 @@
-﻿using CarPool.DataLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CarPool.Services.Data.Models;
+
 
 namespace CarPool.Services.Interfaces
 {
