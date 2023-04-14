@@ -29,10 +29,8 @@ export class TokenInterceptorService implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err) => {
         if (err.status === 401) {
-          this.loadingService.setLoading(false);
           this.authService.logout();
         }
-        this.loadingService.setLoading(false);
         const error = err.error.message || err.statusText;
         return throwError(() => new Error('error'));
       }),
