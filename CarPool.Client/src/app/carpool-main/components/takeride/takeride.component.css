@@ -1,7 +1,7 @@
 
 
 .take-ride-form{
-    width: 24%;
+    width: 23.5rem;
     background-color: white;
     border-radius: 10px;
     z-index: 200 !important;
@@ -49,3 +49,11 @@
     height: 75vh;
 
 }
+
+/* @media screen and (max-width: 1316px) {
+    .take-ride-form{
+        width: 30%;
+        justify-content: center;
+    }
+
+} */

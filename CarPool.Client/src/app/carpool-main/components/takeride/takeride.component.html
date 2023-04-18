@@ -1,7 +1,7 @@
-<section class="background">
+<section class="background container-fluid">
     <app-top-menu></app-top-menu>
-    <section class="book-ride-body row">
-        <section class="take-ride-form form-box-shadow ms-5 mt-4 px-4 py-4 col-4">
+    <section class="book-ride-body row mt-3">
+        <section class="take-ride-form form-box-shadow ms-5 mt-4 px-4 py-4  col-lg-5">
             <div class="take-ride-form-head">
                 <div class="form-check form-switch pt-2 pe-4 float-end">
                     <input class="form-check-input p-2" type="checkbox" (change)="toogleRide()" [checked]="isChecked" id="flexSwitchCheckChecked" checked>
@@ -65,7 +65,7 @@
                 
             </div>
         </section>
-        <section class="col-8 overflow-auto book-ride-body-right ms-5 mt-4 px-4 py-4">
+        <section class="col-lg-7 overflow-auto book-ride-body-right ms-5 mt-4 px-4 py-4">
             <h2 class="purple text-bolder">Your Matches</h2>
             <div class="row">
                 <app-ridescard (click)="booking(ride)" class="col gy-5  cursor-pointer" *ngFor="let ride of rides" [start]="inputData.from" [end]="inputData.to"  [ride]="ride"></app-ridescard>

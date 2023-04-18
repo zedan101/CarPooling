@@ -1,21 +1,23 @@
 <section class="background">
     <app-top-menu></app-top-menu>
     <div class="row ps-5 mt-5">
-        <div class="col-6 p-5 form-box-shadow background-white">
-            <div class="d-flex align-items-center justify-content-evenly mt-3">
-                <img *ngIf="!isShowThumbnail" class="profile ms-3 mb-4" src="{{user.profileImage}}" alt="profile" (error)="isShowThumbnail=true">
-                <div *ngIf="isShowThumbnail" class="profile rounded-circle background-yellow"><span class="d-flex justify-content-center color-white m-4 fw-normal display-1">{{user.userName[0].toUpperCase()}}</span></div>
-                <!-- <img *ngIf="!user.profileImage" class="profile ms-3 mb-4" src="../../../../assets/images/logo.png" alt="profile"> -->
-                <div>
+        <div class="col p-5 form-box-shadow background-white">
+            <div class="row">
+                <div class="col">
+                    <img *ngIf="!isShowThumbnail" class="profile ms-3 mb-4" src="{{user.profileImage}}" alt="profile" (error)="isShowThumbnail=true">
+                    <div *ngIf="isShowThumbnail" class=" profile rounded-circle background-yellow"><span class="d-flex justify-content-center color-white m-4 fw-normal display-1">{{user.userName[0].toUpperCase()}}</span></div>
+                    <!-- <img *ngIf="!user.profileImage" class="profile ms-3 mb-4" src="../../../../assets/images/logo.png" alt="profile"> -->
+                </div>
+                <div class="col">
                     <h2 class="text-truncate ms-3 pb-1 ">User Name : {{user.userName}}</h2>
                     <h6 class="text-truncate ms-3 pb-1">User Email: {{user.userEmail}}</h6>
                     <h6 class="text-truncate ms-3 pb-1">User Id   : {{user.userId}}</h6>
                 </div>
             </div>
-            <div class="d-flex align-items-center justify-content-evenly mt-5 pt-5">
-                <button (click)="openVerticallyCentered(updatePass)" class="btn background-yellow color-white p-2 fw-bold mt-5 ">Change Password</button>
-                <button (click)="openVerticallyCentered(update)" class="btn background-purple color-white p-2 fw-bold mt-5">Update Profile</button>
-                <button (click)="openVerticallyCentered(deleteProfile)" class="btn btn-danger color-white p-2 fw-bold mt-5">Delete Account</button>
+            <div class="row mt-5 pt-5">
+                <button (click)="openVerticallyCentered(updatePass)" class="col me-2 btn background-yellow color-white p-2 fw-bold mt-5 ">Change Password</button>
+                <button (click)="openVerticallyCentered(update)" class="col me-2 btn background-purple color-white p-2 fw-bold mt-5">Update Profile</button>
+                <button (click)="openVerticallyCentered(deleteProfile)" class="col me-2 btn btn-danger color-white p-2 fw-bold mt-5">Delete Account</button>
             </div>
         </div>
     </div>

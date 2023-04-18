@@ -1,5 +1,25 @@
 <section class="home container-fluid ps-0">
   <app-top-menu class="ps-0"></app-top-menu>
+
+<div class="row mt-5 pt-4">
+    <div class="row"><h2 class="pb-4 text-bolder text-end col-5 pe-3">Hey {{user.userName}}!</h2></div>            
+    <div class="col gy-2 gx-3">
+        <div class="d-flex justify-content-end">
+            <a (click)="openTakeRide()" class="box-ride background-purple ms-3 shadow pt-2" >
+                <h2 class="text-center pt-4 mt-5">Book a ride</h2>
+            </a>
+        </div>
+    </div>
+    <div class="col gy-2 gx-3">
+        <div class="d-flex justify-content-start">
+            <a (click)="openOfferRide()" class="box-ride background-yellow ms-3 shadow pt-2">
+                <h2 class="text-center pt-4 mt-5">Offer a ride</h2>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- 
     <div class="d-flex justify-content-center mt-5 pt-4">
         <div>
             <h2 class="pb-4 text-bolder">Hey {{user.userName}}!</h2>
@@ -13,5 +33,5 @@
             </div>
 
         </div>
-    </div>
+    </div> -->
 </section>
