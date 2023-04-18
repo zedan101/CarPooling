@@ -83,8 +83,6 @@ export class EntryFormsComponent implements OnInit {
             userId:"user"+this.datePipe.transform(today, 'ddMMyyyy')+this.signUpForm.get('emailId').value.split(0,3),
             password:this.signUpForm.get('password').value
           }
-          console.log("user"+this.datePipe.transform(today, 'ddMMyyyy'))
-          console.log(this.userData);
           
           let check=await lastValueFrom( this.userService.postUsers(this.userData))
           if(check){
@@ -94,8 +92,7 @@ export class EntryFormsComponent implements OnInit {
               this.router.navigate(['carpool']);
             }
             else{
-              this.isInvalid=true
-              // this.openLogIn();
+              this.isInvalid=true;
             }
       } }
     
