@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, take } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { ImageCompressorService } from 'src/app/common/services/image-compressor.service';
 import { User } from '../../model/user.model';
 import { UsersService } from '../../services/users.service';
 
@@ -16,7 +17,7 @@ export class ProfileComponent implements OnInit {
   imageUrl!:string;
   user!:User;
   isShowThumbnail=false;
-  constructor(private userService:UsersService,private modalService: NgbModal,private authService:AuthService,private router:Router) { }
+  constructor(private userService:UsersService,private modalService: NgbModal,private authService:AuthService,private router:Router,private compressImage : ImageCompressorService) { }
 
   async ngOnInit(){
     this.user=await lastValueFrom(this.userService.getUserDetails());
@@ -81,11 +82,17 @@ export class ProfileComponent implements OnInit {
   selectImage(e: any) {
     if (e.target.files) {
       var reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
-      reader.onload = (event: any) => {
-        console.log(event.target.result);
-        this.imageUrl = event.target.result;
-      };
+      this.compressImage.compress(e.target.files[0],200,200)
+      .pipe(take(1))
+      .subscribe(compressedImage => {
+        console.log(`Image size after compressed: ${compressedImage.size} bytes.`)
+        reader.readAsDataURL(compressedImage);
+        reader.onload = (event: any) => {
+          console.log(event.target.result);
+          this.imageUrl = event.target.result;
+        };
+      })
+     
     }
   }
 }
