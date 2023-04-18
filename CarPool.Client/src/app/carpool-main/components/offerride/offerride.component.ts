@@ -77,18 +77,24 @@ export class OfferRideComponent implements OnInit {
         });
       }
       ride.location.push(this.rideOffer.to.value.toLowerCase( ));
-      ride.date = new Date(this.rideOffer.date.value);
-      ride.time = this.labels.indexOf(this.rideOffer.time.value);
-      ride.numberOfSeatsAvailable = this.seatsLabel.indexOf(this.rideOffer.seats.value) + 1;
-      ride.price = 180;
-      ride.rideId = "";
-      var res=await lastValueFrom(this.rideService.offerRide(ride));
-      if(res){
-        this.toastService.show("Ride Created Successfully!!!", { classname: 'bg-success text-light'});
-        this.offerRideForm.reset();
-        this.isNextPressed=false;
-      }else{
-        this.toastService.show("Something Went Wrong...", { classname: 'bg-danger text-light'});
+      const distinctionTestSet =new Set(ride.location)
+      if(ride.location.length==distinctionTestSet.size){
+        ride.date = new Date(this.rideOffer.date.value);
+        ride.time = this.labels.indexOf(this.rideOffer.time.value);
+        ride.numberOfSeatsAvailable = this.seatsLabel.indexOf(this.rideOffer.seats.value) + 1;
+        ride.price = 180;
+        ride.rideId = "";
+        var res=await lastValueFrom(this.rideService.offerRide(ride));
+        if(res){
+          this.toastService.show("Ride Created Successfully!!!", { classname: 'bg-success text-light'});
+          this.offerRideForm.reset();
+          this.isNextPressed=false;
+        }else{
+          this.toastService.show("Something Went Wrong...", { classname: 'bg-danger text-light'});
+        }
+      }
+      else{
+        this.toastService.show("Any Two Locations Cant be same!!!", { classname: 'bg-danger text-light'});  
       }
     }
     else{

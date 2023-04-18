@@ -46,6 +46,10 @@ export class TakeRideComponent implements OnInit {
 
   async getMatches(){
     if(this.takeRideForm.valid){
+      if(this.takeRide.from.value.toLowerCase()==this.takeRide.to.value.toLowerCase()){
+        this.toastService.show("Source And Destination Can't be same!!!", { classname: 'background-yellow text-light'});
+      }
+      else{
         this.inputData={
           from : this.takeRide.from.value.toLowerCase( ),
           to : this.takeRide.to.value.toLowerCase( ),
@@ -56,6 +60,7 @@ export class TakeRideComponent implements OnInit {
         if(this.rides.length==0){
           this.toastService.show("No matches Found!!!", { classname: 'background-yellow text-light'});
         }
+      }
     }
     else{
     this.toastService.show("Invalid Input", { classname: 'bg-danger text-light'});
