@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CarPool.Services.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -153,15 +153,15 @@ namespace CarPool.Services.Migrations
             migrationBuilder.InsertData(
                 table: "OfferedRide",
                 columns: new[] { "RideId", "AvailableSeats", "CreatedOn", "Date", "Price", "Time", "UserId" },
-                values: new object[] { "abc@123", 2, new DateTime(2023, 4, 11, 16, 32, 7, 763, DateTimeKind.Local).AddTicks(7688), new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 100.0, 1, "gh1" });
+                values: new object[] { "abc@123", 2, new DateTime(2023, 4, 19, 22, 52, 26, 409, DateTimeKind.Local).AddTicks(4367), new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 100.0, 1, "gh1" });
 
             migrationBuilder.InsertData(
                 table: "BookedRide",
                 columns: new[] { "SlNo", "BookedOn", "EndLocationId", "RideId", "StartLocationId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 4, 11, 16, 32, 7, 763, DateTimeKind.Local).AddTicks(7715), 3, "abc@123", 2, "gh2" },
-                    { 2, new DateTime(2023, 4, 11, 16, 32, 7, 763, DateTimeKind.Local).AddTicks(7716), 3, "abc@123", 2, "gh2" }
+                    { 1, new DateTime(2023, 4, 19, 22, 52, 26, 409, DateTimeKind.Local).AddTicks(4408), 3, "abc@123", 2, "gh2" },
+                    { 2, new DateTime(2023, 4, 19, 22, 52, 26, 409, DateTimeKind.Local).AddTicks(4411), 3, "abc@123", 2, "gh2" }
                 });
 
             migrationBuilder.InsertData(

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarPool.Services.Migrations
 {
     [DbContext(typeof(CarPoolContext))]
-    [Migration("20230411110207_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230419172226_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,7 +68,7 @@ namespace CarPool.Services.Migrations
                         new
                         {
                             SlNo = 1,
-                            BookedOn = new DateTime(2023, 4, 11, 16, 32, 7, 763, DateTimeKind.Local).AddTicks(7715),
+                            BookedOn = new DateTime(2023, 4, 19, 22, 52, 26, 409, DateTimeKind.Local).AddTicks(4408),
                             EndLocationId = 3,
                             RideId = "abc@123",
                             StartLocationId = 2,
@@ -77,7 +77,7 @@ namespace CarPool.Services.Migrations
                         new
                         {
                             SlNo = 2,
-                            BookedOn = new DateTime(2023, 4, 11, 16, 32, 7, 763, DateTimeKind.Local).AddTicks(7716),
+                            BookedOn = new DateTime(2023, 4, 19, 22, 52, 26, 409, DateTimeKind.Local).AddTicks(4411),
                             EndLocationId = 3,
                             RideId = "abc@123",
                             StartLocationId = 2,
@@ -154,7 +154,7 @@ namespace CarPool.Services.Migrations
                         {
                             RideId = "abc@123",
                             AvailableSeats = 2,
-                            CreatedOn = new DateTime(2023, 4, 11, 16, 32, 7, 763, DateTimeKind.Local).AddTicks(7688),
+                            CreatedOn = new DateTime(2023, 4, 19, 22, 52, 26, 409, DateTimeKind.Local).AddTicks(4367),
                             Date = new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Price = 100.0,
                             Time = 1,

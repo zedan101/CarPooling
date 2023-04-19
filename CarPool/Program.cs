@@ -46,7 +46,7 @@ namespace CarPool
             builder.Services.Configure<IdentityOptions>(options => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
             
 
-            var connectionString = builder.Configuration["ConnectionString:CarpoolDB"];
+            var connectionString = builder.Configuration["ConnectionString:AzureDB"];
 
             builder.Services.AddDbContext<CarPoolContext>(opts => opts.UseSqlServer(connectionString));
 

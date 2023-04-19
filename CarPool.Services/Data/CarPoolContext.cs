@@ -114,7 +114,7 @@ namespace Carpool.Services.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
          => optionsBuilder
         .UseLazyLoadingProxies()
-        .UseSqlServer("Server=localhost;Database=CarpoolDB;TrustServerCertificate=True;Integrated Security=SSPI;");
+        .UseSqlServer("Server=tcp:carpooldb.database.windows.net,1433;Initial Catalog=CarPoolDB;Persist Security Info=False;User ID=CarPoolAdmin;Password=Admin@1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
 
     }
