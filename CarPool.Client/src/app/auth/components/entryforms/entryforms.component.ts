@@ -6,6 +6,7 @@ import { UsersService } from 'src/app/carpool-main/services/users.service';
 import { DatePipe } from '@angular/common';
 import { lastValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { ToastService } from 'src/app/common/services/toast.service';
 
 @Component({
   selector: 'app-entryforms',
@@ -24,7 +25,7 @@ export class EntryFormsComponent implements OnInit {
   isVisible=false;
   @ViewChild('background') bg!: ElementRef;
 
-  constructor(private router: Router,private userService : UsersService,private datePipe: DatePipe,private authService:AuthService) { }
+  constructor(private router: Router,private userService : UsersService,private datePipe: DatePipe,private authService:AuthService,private toastService:ToastService) { }
 
   ngOnInit(): void {
     this.title ="Log In";
@@ -71,7 +72,7 @@ export class EntryFormsComponent implements OnInit {
     if(isSignUp)
     {     
         if(await lastValueFrom(this.userService.getEmailValidation(this.signUpForm.get('emailId').value))){
-          this.openLogIn();
+          this.toastService.show("Email Already Exist Please LogIn!!", { classname: 'bg-danger text-light'})
           
         }
         else{
