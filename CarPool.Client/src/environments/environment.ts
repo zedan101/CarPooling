@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  localhostUsers: "https://localhost:7107/api/Users",
-  localhostRides:  "https://localhost:7107/api/Rides",
-  localhostLogin:  "https://localhost:7107/api/Auth"
+  localhostUsers: "https://carpool-api.azurewebsites.net/api/Users",
+  localhostRides:  "https://carpool-api.azurewebsites.net/api/Rides",
+  localhostLogin:  "https://carpool-api.azurewebsites.net/api/Auth"
 };
 
 /*
