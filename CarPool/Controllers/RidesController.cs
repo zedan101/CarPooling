@@ -29,7 +29,7 @@ namespace CarPool.Controllers
 
 
         /// <summary>
-        /// Controller to recive data from frontend and pass it for processing to GetMatches method of RidesService.
+        /// Controller to recieve data from frontend and pass it for processing to GetMatches method of RidesService.
         /// </summary>
         /// <param name="date">Date entered by user in frontend</param>
         /// <param name="time">Time entered by user in frontend</param>
@@ -61,7 +61,7 @@ namespace CarPool.Controllers
         }
 
         /// <summary>
-        /// Controller to recive data from frontend and pass it for processing to OfferRide method of RidesService.
+        /// Controller to recieve data from frontend and pass it for processing to OfferRide method of RidesService.
         /// </summary>
         /// <param name="ride">User Input as instence of Rides class</param>
         /// <returns>Returns response from OfferRide method of RidesService</returns>

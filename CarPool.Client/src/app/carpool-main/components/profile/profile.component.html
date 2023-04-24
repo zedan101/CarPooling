@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col">
                     <img *ngIf="!isShowThumbnail" class="profile ms-3 mb-4" src="{{user.profileImage}}" alt="profile" (error)="isShowThumbnail=true">
-                    <div *ngIf="isShowThumbnail" class=" profile rounded-circle background-yellow"><span class="d-flex justify-content-center color-white m-4 fw-normal display-1">{{user.userName[0].toUpperCase()}}</span></div>
+                    <div *ngIf="isShowThumbnail" class=" profile rounded-circle background-yellow pt-4"><span class="d-flex justify-content-center color-white m-4 fw-normal display-1">{{user.userName[0].toUpperCase()}}</span></div>
                     <!-- <img *ngIf="!user.profileImage" class="profile ms-3 mb-4" src="../../../../assets/images/logo.png" alt="profile"> -->
                 </div>
                 <div class="col">
